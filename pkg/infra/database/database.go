@@ -13,28 +13,30 @@ import (
 	_ "github.com/lib/pq"
 )
 
+var open = sql.Open
+
 func Connect(logger interfaces.ILogger, shotdown chan bool) (*sql.DB, error) {
 	connString, err := getConnectionString()
 	if err != nil {
-		logger.Error(fmt.Sprintf("[Database::Connect] - wrong database credentials %e", err))
+		logger.Error(fmt.Sprintf("[Database::Connect] - wrong database credentials %s", err.Error()))
 		return nil, err
 	}
 
-	db, err := sql.Open("postgres", connString)
+	db, err := open("postgres", connString)
 	if err != nil {
-		logger.Error(fmt.Sprintf("[Database::Connect] - error while connect to database: %e", err))
-		return nil, err
+		logger.Error(fmt.Sprintf("[Database::Connect] - error while connect to database: %s", err.Error()))
+		return nil, errors.NewInternalError(fmt.Sprintf("failure to connect to the database: %s", err.Error()))
 	}
 
 	err = db.Ping()
 	if err != nil {
-		logger.Error(fmt.Sprintf("[Database::Connect] - error while check database connection: %v", err))
-		return nil, err
+		logger.Error(fmt.Sprintf("[Database::Connect] - error while check database connection: %s", err.Error()))
+		return nil, errors.NewInternalError(fmt.Sprintf("failure to connect to the database: %s", err.Error()))
 	}
 
 	secondsToSleep, err := strconv.Atoi(os.Getenv("DB_SECONDS_TO_PING"))
 	if err != nil {
-		logger.Error(fmt.Sprintf("[Database::Connect] - DB_SECONDS_TO_PING is required: %v", err))
+		logger.Error(fmt.Sprintf("[Database::Connect] - DB_SECONDS_TO_PING is required: %s", err.Error()))
 		return nil, errors.NewInternalError(err.Error())
 	}
 
