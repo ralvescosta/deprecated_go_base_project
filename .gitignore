@@ -1,0 +1,3 @@
+*.debug
+coverage
+db/FEIRAS_LIVRES
