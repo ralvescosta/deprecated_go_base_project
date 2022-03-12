@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+
 	"markets/pkg/domain/usecases"
 	valueObjects "markets/pkg/domain/value_objects"
 	"markets/pkg/infra/repositories"
