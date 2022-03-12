@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func Test_Create(t *testing.T) {
+func Test_MarketRepo_Create(t *testing.T) {
 	t.Run("should execute correctly", func(t *testing.T) {
 		sut := makeMarketRepositorySut()
 
@@ -67,7 +67,7 @@ func Test_Create(t *testing.T) {
 	})
 }
 
-func Test_Find(t *testing.T) {
+func Test_MarketRepo_Find(t *testing.T) {
 	t.Run("should execute correctly", func(t *testing.T) {
 		sut := makeMarketRepositorySut()
 
