@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"testing"
 
 	httpServer "markets/pkg/infra/http_server"
@@ -64,6 +65,7 @@ func makeSut() sutReturn {
 		Header: http.Header{
 			"op": []string{"op"},
 		},
+		URL: &url.URL{},
 	}
 
 	sut := HandlerAdapt(handlerSpy, logger)
