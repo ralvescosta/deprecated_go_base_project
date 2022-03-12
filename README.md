@@ -89,7 +89,6 @@ Optou-se por utilizar a lib Zap para poder ser o gerenciador de logs da aplicaç
 
 Implementou-se uma estratégia de Graceful Shutdown para quando ocorra a perda de conexão com o banco de dados a aplicação não “desligue” cortando todas as conexões TCP ativas. Desta forma perante a ausência do mongo a aplicação para de aceitar pedidos e espera todas as conexões TCP fecharem para poder encerrar a aplicação.
 
-
 ## Rotas
 
 > POST /api/v1/markets
