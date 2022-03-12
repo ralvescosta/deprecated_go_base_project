@@ -128,7 +128,7 @@ curl --location --request POST 'https://localhost:3333/api/v1/markets' \
 make docker-compose
 ```
 
-**OBS: Na pasta integration contem um par de collection e environment do postman com os endpoints criados para a aplicação**
+**OBS: Na pasta integration contem um par de collection e environment do postman com os endpoints criados para a aplicação.**
 
 ### Para executar a aplicação de forma separada
 

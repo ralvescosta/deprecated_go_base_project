@@ -42,6 +42,19 @@ func (pst MarketViewModel) ToValueObject() valueObjects.MarketValueObjects {
 	}
 }
 
+func NewSliceOfViewModel(vo []valueObjects.MarketValueObjects) []MarketViewModel {
+	if len(vo) == 0 {
+		return []MarketViewModel{}
+	}
+
+	var result []MarketViewModel
+	for _, v := range vo {
+		result = append(result, NewMarketViewModel(v))
+	}
+
+	return result
+}
+
 func NewMarketViewModel(vo valueObjects.MarketValueObjects) MarketViewModel {
 	return MarketViewModel{
 		Long:       vo.Long,

@@ -32,6 +32,7 @@ func HandlerAdapt(handler func(httpRequest httpServer.HttpRequest) httpServer.Ht
 			Body:    body,
 			Headers: ctx.Request.Header,
 			Params:  params,
+			Query:   ctx.Request.URL.Query(),
 			Ctx:     ctx.Request.Context(),
 		}
 
