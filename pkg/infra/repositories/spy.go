@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+
 	valueObjects "markets/pkg/domain/value_objects"
 
 	"github.com/stretchr/testify/mock"
@@ -21,6 +22,12 @@ func (pst MarketRepositorySpy) Find(ctx context.Context, market valueObjects.Mar
 	args := pst.Called(ctx, market)
 
 	return args.Get(0).([]valueObjects.MarketValueObjects), args.Error(1)
+}
+
+func (pst MarketRepositorySpy) Delete(ctx context.Context, registerCode string) error {
+	args := pst.Called(ctx, registerCode)
+
+	return args.Error(0)
 }
 
 func NewMarketRepositorySpy() *MarketRepositorySpy {

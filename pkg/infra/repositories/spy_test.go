@@ -2,8 +2,9 @@ package repositories
 
 import (
 	"context"
-	valueObjects "markets/pkg/domain/value_objects"
 	"testing"
+
+	valueObjects "markets/pkg/domain/value_objects"
 )
 
 func Test_Create(t *testing.T) {
@@ -29,6 +30,19 @@ func Test_Find(t *testing.T) {
 		sut.On("Find", ctx, market).Return([]valueObjects.MarketValueObjects{}, nil)
 
 		sut.Find(ctx, market)
+
+		sut.AssertExpectations(t)
+	})
+}
+
+func Test_Delete(t *testing.T) {
+	t.Run("should execute correctly", func(t *testing.T) {
+		sut := NewMarketRepositorySpy()
+
+		ctx := context.Background()
+		sut.On("Delete", ctx, "register").Return(nil)
+
+		sut.Delete(ctx, "register")
 
 		sut.AssertExpectations(t)
 	})

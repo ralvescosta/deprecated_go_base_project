@@ -77,6 +77,7 @@ func Test_MarketRepo_Find(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.NotNil(t, result)
+		sut.logger.AssertExpectations(t)
 	})
 
 	t.Run("should return err when prepare statement failure", func(t *testing.T) {
@@ -87,6 +88,7 @@ func Test_MarketRepo_Find(t *testing.T) {
 
 		assert.Error(t, err)
 		assert.Nil(t, result)
+		sut.logger.AssertExpectations(t)
 	})
 
 	t.Run("should return err if query failure", func(t *testing.T) {
@@ -100,6 +102,43 @@ func Test_MarketRepo_Find(t *testing.T) {
 
 		assert.Error(t, err)
 		assert.Nil(t, result)
+		sut.logger.AssertExpectations(t)
+	})
+}
+
+func Test_MarketRepo_Delete(t *testing.T) {
+	t.Run("should execute correctly", func(t *testing.T) {
+		sut := makeMarketRepositorySut()
+
+		sut.sqlMockForDeleteSuccessfully()
+
+		err := sut.repo.Delete(context.Background(), sut.marketMocked.Registro)
+
+		assert.NoError(t, err)
+	})
+
+	t.Run("should return err when prepare statement failure", func(t *testing.T) {
+		sut := makeMarketRepositorySut()
+
+		sut.logger.On("Error", "[MarketRepository::Delete] Error in prepare statement", []zapcore.Field(nil))
+
+		err := sut.repo.Delete(context.Background(), sut.marketMocked.Registro)
+
+		assert.Error(t, err)
+		sut.logger.AssertExpectations(t)
+	})
+
+	t.Run("should return err if query failure", func(t *testing.T) {
+		sut := makeMarketRepositorySut()
+
+		prepare := sut.sqlMock.ExpectPrepare("")
+		prepare.ExpectQuery().WithArgs()
+		sut.logger.On("Error", "[MarketRepository::Delete] query execution error", []zapcore.Field(nil))
+
+		err := sut.repo.Delete(context.Background(), sut.marketMocked.Registro)
+
+		assert.Error(t, err)
+		sut.logger.AssertExpectations(t)
 	})
 }
 
@@ -197,6 +236,18 @@ func (pst marketRepositorySutRtn) sqlMockForFindSuccessfully() {
 
 	prepare.ExpectQuery().WithArgs(
 		pst.modelMocked.Long,
+	).WillReturnRows(rows)
+}
+
+func (pst marketRepositorySutRtn) sqlMockForDeleteSuccessfully() {
+	query := "UPDATE feiras SET deletado_em = \\$1 WHERE registro = \\$2"
+	rows := pst.sqlMock.NewRows([]string{})
+
+	prepare := pst.sqlMock.ExpectPrepare(query)
+
+	prepare.ExpectQuery().WithArgs(
+		pst.modelMocked.CriadoEm,
+		pst.modelMocked.Registro,
 	).WillReturnRows(rows)
 }
 

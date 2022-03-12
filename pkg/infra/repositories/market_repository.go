@@ -105,6 +105,24 @@ func (pst marketRepository) Find(ctx context.Context, market valueObjects.Market
 	return results, nil
 }
 
+func (pst marketRepository) Delete(ctx context.Context, registerCode string) error {
+	sql := `UPDATE feiras SET deletado_em = $1 WHERE registro = $2`
+
+	prepare, err := pst.db.PrepareContext(ctx, sql)
+	if err != nil {
+		pst.logger.Error("[MarketRepository::Delete] Error in prepare statement")
+		return errors.NewInternalError("error in prepare statement")
+	}
+
+	_, err = prepare.QueryContext(ctx, now(), registerCode)
+	if err != nil {
+		pst.logger.Error("[MarketRepository::Delete] query execution error")
+		return errors.NewInternalError("query execution error")
+	}
+
+	return nil
+}
+
 func buildWhere(market valueObjects.MarketValueObjects) (string, []interface{}) {
 	var mappingFields = map[string]string{
 		"Long": "long", "Lat": "lat", "Setcens": "setcens", "Areap": "areap", "Coddist": "coddist", "Distrito": "distrito", "Codsubpref": "codsubpref",

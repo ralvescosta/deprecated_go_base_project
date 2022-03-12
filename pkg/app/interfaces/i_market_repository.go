@@ -9,4 +9,5 @@ import (
 type IMarketRepository interface {
 	Create(ctx context.Context, market valueObjects.MarketValueObjects) (valueObjects.MarketValueObjects, error)
 	Find(ctx context.Context, market valueObjects.MarketValueObjects) ([]valueObjects.MarketValueObjects, error)
+	Delete(ctx context.Context, registerCode string) error
 }
