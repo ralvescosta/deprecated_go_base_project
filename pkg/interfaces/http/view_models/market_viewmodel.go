@@ -42,7 +42,7 @@ func (pst MarketViewModel) ToValueObject() valueObjects.MarketValueObjects {
 	}
 }
 
-func NewSliceOfViewModel(vo []valueObjects.MarketValueObjects) []MarketViewModel {
+func NewSliceOfMarketViewModel(vo []valueObjects.MarketValueObjects) []MarketViewModel {
 	if len(vo) == 0 {
 		return []MarketViewModel{}
 	}

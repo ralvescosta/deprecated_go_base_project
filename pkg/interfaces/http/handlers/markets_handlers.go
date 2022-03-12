@@ -63,7 +63,7 @@ func (pst marketHandlers) GetByQuery(httpRequest httpServer.HttpRequest) httpSer
 		return pst.httpResFactory.ErrorResponseMapper(err, nil)
 	}
 
-	return pst.httpResFactory.Ok(viewmodels.NewSliceOfViewModel(result), nil)
+	return pst.httpResFactory.Ok(viewmodels.NewSliceOfMarketViewModel(result), nil)
 }
 
 func queryToMarketViewModel(query map[string][]string) (viewmodels.MarketViewModel, error) {

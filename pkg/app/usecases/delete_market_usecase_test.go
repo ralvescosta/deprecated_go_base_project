@@ -40,6 +40,20 @@ func Test_DeleteMarket_Execute(t *testing.T) {
 		assert.IsType(t, errors.NotFoundError{}, err)
 		sut.repo.AssertExpectations(t)
 	})
+
+	t.Run("should return error if some error occur during the find", func(t *testing.T) {
+		sut := makeDeleteMarketSut()
+
+		ctx := context.Background()
+
+		sut.repo.On("Find", ctx, valueObjects.MarketValueObjects{Registro: "registro"}).Return([]valueObjects.MarketValueObjects(nil), errors.NewInternalError("some error"))
+
+		err := sut.useCase.Execute(ctx, "registro")
+
+		assert.Error(t, err)
+		assert.IsType(t, errors.InternalError{}, err)
+		sut.repo.AssertExpectations(t)
+	})
 }
 
 type deleteMarketSutRtn struct {
