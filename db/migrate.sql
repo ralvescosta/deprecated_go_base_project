@@ -12,12 +12,12 @@ CREATE TABLE feiras (
   regiao8 VARCHAR NOT NULL,
   nome_feira VARCHAR NOT NULL,
   registro VARCHAR NOT NULL,
-  lagradouro VARCHAR NOT NULL,
+  logradouro VARCHAR NOT NULL,
   numero VARCHAR NOT NULL,
   bairro VARCHAR NOT NULL,
   referencia VARCHAR NOT NULL,
-  criado_em timestamptz NOT NULL,
-  atualizado_em timestamptz NOT NULL,
-  deletado_em timestamptz NOT NULL,
+  criado_em TIMESTAMPTZ NOT NULL,
+  atualizado_em TIMESTAMPTZ NOT NULL,
+  deletado_em TIMESTAMPTZ,
   CONSTRAINT feiras_pkey PRIMARY KEY (id)
 )
