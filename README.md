@@ -1,5 +1,7 @@
 # Unico Challenge
 
+[![CircleCI](https://circleci.com/gh/ralvescosta/unico_challenge/tree/main.svg?style=svg)](https://circleci.com/gh/ralvescosta/unico_challenge/tree/main)
+[![codecov](https://codecov.io/gh/ralvescosta/unico_challenge/branch/main/graph/badge.svg?token=9FSVL883K1)](https://codecov.io/gh/ralvescosta/unico_challenge)
 ## Conteúdo
 - [Unico Challenge](#unico-challenge)
   - [Conteúdo](#conteudo)
