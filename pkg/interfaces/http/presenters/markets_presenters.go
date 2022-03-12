@@ -19,7 +19,7 @@ func (pst marketRoutes) Register(httpServer httpServer.IHTTPServer) {
 	httpServer.RegisterRoute("GET", "/api/v1/markets", adapters.HandlerAdapt(pst.handlers.FindByQuery, pst.logger))
 	//@TODO: verify the vest approach to update (HTTP Verb and the id parameter)
 	httpServer.RegisterRoute("PATCH", "/api/v1/markets/:id", adapters.HandlerAdapt(pst.handlers.Update, pst.logger))
-	httpServer.RegisterRoute("DELETE", "/api/v1/markets/:id", adapters.HandlerAdapt(pst.handlers.Delete, pst.logger))
+	httpServer.RegisterRoute("DELETE", "/api/v1/markets/:registerCode", adapters.HandlerAdapt(pst.handlers.Delete, pst.logger))
 }
 
 func NewMarketRoutes(logger interfaces.ILogger, handlers handlers.IMarketHandlers) IRoutes {

@@ -23,6 +23,7 @@ type marketHandlers struct {
 	validator      interfaces.IValidator
 	httpResFactory factories.HttpResponseFactory
 	createUseCase  usecases.ICreateMarketUseCase
+	deleteUseCase  usecases.IDeleteMarketUseCase
 }
 
 func (pst marketHandlers) Create(httpRequest httpServer.HttpRequest) httpServer.HttpResponse {
@@ -60,16 +61,26 @@ func (pst marketHandlers) Update(httpRequest httpServer.HttpRequest) httpServer.
 }
 
 func (pst marketHandlers) Delete(httpRequest httpServer.HttpRequest) httpServer.HttpResponse {
-	return pst.httpResFactory.Ok(nil, nil)
+	registerCode, ok := httpRequest.Params["registerCode"]
+	if !ok {
+		return pst.httpResFactory.BadRequest("registerCode is required", nil)
+	}
+
+	if err := pst.deleteUseCase.Execute(httpRequest.Ctx, registerCode); err != nil {
+		return pst.httpResFactory.ErrorResponseMapper(err, nil)
+	}
+
+	return pst.httpResFactory.Ok(struct{}{}, nil)
 }
 
 func NewMarketHandlers(logger interfaces.ILogger, validator interfaces.IValidator, httpResFactory factories.HttpResponseFactory,
-	createUseCase usecases.ICreateMarketUseCase) IMarketHandlers {
+	createUseCase usecases.ICreateMarketUseCase, deleteUseCase usecases.IDeleteMarketUseCase) IMarketHandlers {
 
 	return marketHandlers{
 		logger,
 		validator,
 		httpResFactory,
 		createUseCase,
+		deleteUseCase,
 	}
 }
