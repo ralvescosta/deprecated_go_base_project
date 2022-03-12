@@ -2,8 +2,11 @@ package cmd
 
 import (
 	"markets/pkg/app/interfaces"
+	"markets/pkg/app/usecases"
+	"markets/pkg/infra/database"
 	httpServer "markets/pkg/infra/http_server"
 	"markets/pkg/infra/logger"
+	"markets/pkg/infra/repositories"
 	"markets/pkg/infra/validator"
 	"markets/pkg/interfaces/http/factories"
 	"markets/pkg/interfaces/http/handlers"
@@ -25,11 +28,18 @@ func NewHTTPContainer(env interfaces.IEnvironments) (HTTPServerContainer, error)
 
 	shotdown := make(chan bool)
 
+	db, err := database.Connect(logger, shotdown)
+	if err != nil {
+		return HTTPServerContainer{}, err
+	}
+
 	httpServer := httpServer.NewHTTPServer(env, logger, shotdown)
 	vAlidator := validator.NewValidator()
 	httpResFactory := factories.NewHttpResponseFactory()
+	marketRepository := repositories.NewMarketRepository(logger, db)
 
-	marketHandlers := handlers.NewMarketHandlers(logger, vAlidator, httpResFactory)
+	createMarketUseCase := usecases.NewCreateMarketUseCase(marketRepository)
+	marketHandlers := handlers.NewMarketHandlers(logger, vAlidator, httpResFactory, createMarketUseCase)
 	marketsRoutes := presenters.NewMarketRoutes(logger, marketHandlers)
 
 	return HTTPServerContainer{
