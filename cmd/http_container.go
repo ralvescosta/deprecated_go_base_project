@@ -40,8 +40,9 @@ func NewHTTPContainer(env interfaces.IEnvironments) (HTTPServerContainer, error)
 
 	createMarketUseCase := usecases.NewCreateMarketUseCase(marketRepository)
 	getByQueryUseCase := usecases.NewGetMarketByQueryUseCase(marketRepository)
+	updateMarketUseCase := usecases.NewUpdateMarketUseCase(marketRepository)
 	deleteMarketUseCase := usecases.NewDeleteMarketUseCase(marketRepository)
-	marketHandlers := handlers.NewMarketHandlers(logger, vAlidator, httpResFactory, createMarketUseCase, getByQueryUseCase, deleteMarketUseCase)
+	marketHandlers := handlers.NewMarketHandlers(logger, vAlidator, httpResFactory, createMarketUseCase, getByQueryUseCase, updateMarketUseCase, deleteMarketUseCase)
 	marketsRoutes := presenters.NewMarketRoutes(logger, marketHandlers)
 
 	return HTTPServerContainer{

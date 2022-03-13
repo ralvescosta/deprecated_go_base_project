@@ -47,3 +47,17 @@ func Test_Delete(t *testing.T) {
 		sut.AssertExpectations(t)
 	})
 }
+
+func Test_Update(t *testing.T) {
+	t.Run("should execute correctly", func(t *testing.T) {
+		sut := NewMarketRepositorySpy()
+
+		ctx := context.Background()
+		market := valueObjects.MarketValueObjects{}
+		sut.On("Update", ctx, "register", market).Return(market, nil)
+
+		sut.Update(ctx, "register", market)
+
+		sut.AssertExpectations(t)
+	})
+}

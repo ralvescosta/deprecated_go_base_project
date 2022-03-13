@@ -106,6 +106,58 @@ func Test_MarketRepo_Find(t *testing.T) {
 	})
 }
 
+func Test_MarketRepo_Update(t *testing.T) {
+	t.Run("should execute correctly", func(t *testing.T) {
+		sut := makeMarketRepositorySut()
+
+		sut.sqlMockForUpdateSuccessfully()
+		sut.marketMocked.Registro = ""
+		sut.marketMocked.ID = 0
+
+		_, err := sut.repo.Update(context.Background(), "registro", sut.marketMocked)
+
+		assert.NoError(t, err)
+	})
+
+	t.Run("should return err when prepare statement failure", func(t *testing.T) {
+		sut := makeMarketRepositorySut()
+
+		sut.logger.On("Error", "[MarketRepository::Update] Error in prepare statement", []zapcore.Field(nil))
+
+		_, err := sut.repo.Update(context.Background(), "registro", sut.marketMocked)
+
+		assert.Error(t, err)
+		sut.logger.AssertExpectations(t)
+	})
+
+	t.Run("should return err if query failure", func(t *testing.T) {
+		sut := makeMarketRepositorySut()
+
+		prepare := sut.sqlMock.ExpectPrepare("")
+		prepare.ExpectQuery().WithArgs()
+		sut.logger.On("Error", "[MarketRepository::Update] query execution error", []zapcore.Field(nil))
+
+		_, err := sut.repo.Update(context.Background(), "registro", sut.marketMocked)
+
+		assert.Error(t, err)
+		sut.logger.AssertExpectations(t)
+	})
+
+	t.Run("should return err when scanning failure", func(t *testing.T) {
+		sut := makeMarketRepositorySut()
+
+		prepare := sut.sqlMock.ExpectPrepare("")
+		row := sut.sqlMock.NewRows([]string{""})
+		prepare.ExpectQuery().WithArgs().WillReturnRows(row)
+		sut.logger.On("Error", "[MarketRepository::Update] - scanning the result failure", []zapcore.Field(nil))
+
+		_, err := sut.repo.Update(context.Background(), "registro", sut.marketMocked)
+
+		assert.Error(t, err)
+		sut.logger.AssertExpectations(t)
+	})
+}
+
 func Test_MarketRepo_Delete(t *testing.T) {
 	t.Run("should execute correctly", func(t *testing.T) {
 		sut := makeMarketRepositorySut()
@@ -236,6 +288,57 @@ func (pst marketRepositorySutRtn) sqlMockForFindSuccessfully() {
 
 	prepare.ExpectQuery().WithArgs(
 		pst.modelMocked.Long,
+	).WillReturnRows(rows)
+}
+
+func (pst marketRepositorySutRtn) sqlMockForUpdateSuccessfully() {
+	query :=
+		"UPDATE feiras  SET   long = \\$1,  lat = \\$2,  setcens = \\$3,  areap = \\$4,  coddist = \\$5,  distrito = \\$6,  codsubpref = \\$7,  subpref = \\$8,  regiao5 = \\$9,  regiao8 = \\$10,  nome_feira = \\$11,  logradouro = \\$12,  numero = \\$13,  bairro = \\$14,  referencia = \\$15 WHERE registro = \\$16 RETURNING feiras.\\*"
+	rows := pst.sqlMock.NewRows(
+		[]string{"id", "long", "lat", "setcens", "areap", "coddist", "distrito", "codsubpref", "subpref", "regiao5", "regiao8", "nome_feira", "registro",
+			"logradouro", "numero", "bairro", "referencia", "criado_em", "atualizado_em", "deletado_em"},
+	).AddRow(
+		pst.modelMocked.ID,
+		pst.modelMocked.Long,
+		pst.modelMocked.Lat,
+		pst.modelMocked.Setcens,
+		pst.modelMocked.Areap,
+		pst.modelMocked.Coddist,
+		pst.modelMocked.Distrito,
+		pst.modelMocked.Codsubpref,
+		pst.modelMocked.Subpref,
+		pst.modelMocked.Regiao5,
+		pst.modelMocked.Regiao8,
+		pst.modelMocked.NomeFeira,
+		pst.modelMocked.Registro,
+		pst.modelMocked.Logradouro,
+		pst.modelMocked.Numero,
+		pst.modelMocked.Bairro,
+		pst.modelMocked.Referencia,
+		pst.modelMocked.CriadoEm,
+		pst.modelMocked.AtualizadoEm,
+		pst.modelMocked.DeletadoEm,
+	)
+
+	prepare := pst.sqlMock.ExpectPrepare(query)
+
+	prepare.ExpectQuery().WithArgs(
+		pst.modelMocked.Long,
+		pst.modelMocked.Lat,
+		pst.modelMocked.Setcens,
+		pst.modelMocked.Areap,
+		pst.modelMocked.Coddist,
+		pst.modelMocked.Distrito,
+		pst.modelMocked.Codsubpref,
+		pst.modelMocked.Subpref,
+		pst.modelMocked.Regiao5,
+		pst.modelMocked.Regiao8,
+		pst.modelMocked.NomeFeira,
+		pst.modelMocked.Logradouro,
+		pst.modelMocked.Numero,
+		pst.modelMocked.Bairro,
+		pst.modelMocked.Referencia,
+		pst.modelMocked.Registro,
 	).WillReturnRows(rows)
 }
 

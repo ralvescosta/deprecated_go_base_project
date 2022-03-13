@@ -76,7 +76,7 @@ func (pst marketRepository) Find(ctx context.Context, market valueObjects.Market
 					FROM feiras
 					WHERE deletado_em IS NULL`
 
-	where, fields := buildWhere(market)
+	where, fields := buildQuery("AND", "", market)
 
 	sql += where
 	prepare, err := pst.db.PrepareContext(ctx, sql)
@@ -105,6 +105,36 @@ func (pst marketRepository) Find(ctx context.Context, market valueObjects.Market
 	return results, nil
 }
 
+func (pst marketRepository) Update(ctx context.Context, registerCode string, market valueObjects.MarketValueObjects) (valueObjects.MarketValueObjects, error) {
+	sql := `UPDATE feiras  SET `
+
+	set, fields := buildQuery("", ",", market)
+	fields = append(fields, registerCode)
+	set = set[:len(set)-1]
+	set += fmt.Sprintf(" WHERE registro = $%v RETURNING feiras.*", len(fields))
+	sql += set
+
+	prepare, err := pst.db.PrepareContext(ctx, sql)
+	if err != nil {
+		pst.logger.Error("[MarketRepository::Update] Error in prepare statement")
+		return valueObjects.MarketValueObjects{}, errors.NewInternalError("error in prepare statement")
+	}
+
+	row := prepare.QueryRowContext(ctx, fields...)
+	if row.Err() != nil {
+		pst.logger.Error("[MarketRepository::Update] query execution error")
+		return valueObjects.MarketValueObjects{}, errors.NewInternalError("query execution error")
+	}
+
+	result, err := pst.scan(row)
+	if err != nil {
+		pst.logger.Error("[MarketRepository::Update] - scanning the result failure")
+		return valueObjects.MarketValueObjects{}, err
+	}
+
+	return result, nil
+}
+
 func (pst marketRepository) Delete(ctx context.Context, registerCode string) error {
 	sql := `UPDATE feiras SET deletado_em = $1 WHERE registro = $2`
 
@@ -123,7 +153,7 @@ func (pst marketRepository) Delete(ctx context.Context, registerCode string) err
 	return nil
 }
 
-func buildWhere(market valueObjects.MarketValueObjects) (string, []interface{}) {
+func buildQuery(pre, pos string, market valueObjects.MarketValueObjects) (string, []interface{}) {
 	var mappingFields = map[string]string{
 		"Long": "long", "Lat": "lat", "Setcens": "setcens", "Areap": "areap", "Coddist": "coddist", "Distrito": "distrito", "Codsubpref": "codsubpref",
 		"Subpref": "subpref", "Regiao5": "regiao5", "Regiao8": "regiao8", "NomeFeira": "nome_feira", "Registro": "registro", "Logradouro": "logradouro",
@@ -141,7 +171,7 @@ func buildWhere(market valueObjects.MarketValueObjects) (string, []interface{}) 
 		field = vOf.Field(i)
 		fieldName := mappingFields[vOf.Type().Field(i).Name]
 		if !field.IsZero() {
-			where += fmt.Sprintf(" AND %s = $%v", fieldName, fieldCount)
+			where += fmt.Sprintf(" %s %s = $%v%s", pre, fieldName, fieldCount, pos)
 			fields = append(fields, field.Interface())
 			fieldCount++
 		}

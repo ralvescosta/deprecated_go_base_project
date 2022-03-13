@@ -22,12 +22,13 @@ type IMarketHandlers interface {
 }
 
 type marketHandlers struct {
-	logger            interfaces.ILogger
-	validator         interfaces.IValidator
-	httpResFactory    factories.HttpResponseFactory
-	createUseCase     usecases.ICreateMarketUseCase
-	getByQueryUseCase usecases.IGetMarketByQueryUseCase
-	deleteUseCase     usecases.IDeleteMarketUseCase
+	logger              interfaces.ILogger
+	validator           interfaces.IValidator
+	httpResFactory      factories.HttpResponseFactory
+	createUseCase       usecases.ICreateMarketUseCase
+	getByQueryUseCase   usecases.IGetMarketByQueryUseCase
+	updateMarketUseCase usecases.IUpdateMarketUseCase
+	deleteUseCase       usecases.IDeleteMarketUseCase
 }
 
 func (pst marketHandlers) Create(httpRequest httpServer.HttpRequest) httpServer.HttpResponse {
@@ -96,7 +97,25 @@ func queryToMarketViewModel(query map[string][]string) (viewmodels.MarketViewMod
 }
 
 func (pst marketHandlers) Update(httpRequest httpServer.HttpRequest) httpServer.HttpResponse {
-	return pst.httpResFactory.Ok(nil, nil)
+	vModel := viewmodels.MarketViewModel{}
+	if err := json.Unmarshal(httpRequest.Body, &vModel); err != nil {
+		return pst.httpResFactory.BadRequest("body is required", nil)
+	}
+	if vModel.Registro != "" {
+		return pst.httpResFactory.BadRequest("the field 'registro' is not allowed", nil)
+	}
+
+	registerCode, ok := httpRequest.Params["registerCode"]
+	if !ok {
+		return pst.httpResFactory.BadRequest("registerCode is required", nil)
+	}
+
+	result, err := pst.updateMarketUseCase.Execute(httpRequest.Ctx, registerCode, vModel.ToValueObject())
+	if err != nil {
+		return pst.httpResFactory.ErrorResponseMapper(err, nil)
+	}
+
+	return pst.httpResFactory.Ok(viewmodels.NewMarketViewModel(result), nil)
 }
 
 func (pst marketHandlers) Delete(httpRequest httpServer.HttpRequest) httpServer.HttpResponse {
@@ -113,7 +132,8 @@ func (pst marketHandlers) Delete(httpRequest httpServer.HttpRequest) httpServer.
 }
 
 func NewMarketHandlers(logger interfaces.ILogger, validator interfaces.IValidator, httpResFactory factories.HttpResponseFactory,
-	createUseCase usecases.ICreateMarketUseCase, getByQueyUseCase usecases.IGetMarketByQueryUseCase, deleteUseCase usecases.IDeleteMarketUseCase) IMarketHandlers {
+	createUseCase usecases.ICreateMarketUseCase, getByQueyUseCase usecases.IGetMarketByQueryUseCase, updateMarketUseCase usecases.IUpdateMarketUseCase,
+	deleteUseCase usecases.IDeleteMarketUseCase) IMarketHandlers {
 
 	return marketHandlers{
 		logger,
@@ -121,6 +141,7 @@ func NewMarketHandlers(logger interfaces.ILogger, validator interfaces.IValidato
 		httpResFactory,
 		createUseCase,
 		getByQueyUseCase,
+		updateMarketUseCase,
 		deleteUseCase,
 	}
 }

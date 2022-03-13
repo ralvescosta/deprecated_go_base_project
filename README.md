@@ -1,6 +1,6 @@
-# Unico Challenge
+# unico IDTech Challenge
 
-[![CircleCI](https://circleci.com/gh/ralvescosta/unico_challenge/tree/main.svg?style=svg)](https://circleci.com/gh/ralvescosta/unico_challenge/tree/main)
+[![CircleCI](https://circleci.com/gh/ralvescosta/unico_idtech_challenge/tree/main.svg?style=svg)](https://circleci.com/gh/ralvescosta/unico_idtech_challenge/tree/main)
 [![codecov](https://codecov.io/gh/ralvescosta/unico_challenge/branch/main/graph/badge.svg?token=9FSVL883K1)](https://codecov.io/gh/ralvescosta/unico_challenge)
 ## Conteúdo
 - [Unico Challenge](#unico-challenge)
@@ -11,7 +11,7 @@
 
 ## Estrutura do projeto
 
-O projeto foi estruturado em camadas viabilizando assim a utilização de alguns padrões de projetos e alguns princípios arquiteturais obtendo assim uma aplicação testável e de fácil manutenção. As principais camadas do projeto são:
+O projeto foi estruturado em camadas viabilizando a utilização de alguns padrões de projetos e alguns princípios arquiteturais obtendo assim uma aplicação testável e de fácil manutenção. As principais camadas do projeto são:
 
 - **cmd**: Seguindo o padrão da comunidade, esta camada é utilizada para gerenciar configurações iniciais e execução da aplicação.
 
@@ -39,13 +39,12 @@ Abaixo segue um esquemático simplificado da estrutura da aplicação:
 │       │   └── interfaces
 │       │       └── i_*.go
 │       │   └── usecases
-│       │       └── folders
-│       │           └── *_usecase.go
-│       │           └── *_usecase_test.go
+│       │       └── *_usecase.go
+│       │       └── *_usecase_test.go
 │       │
 │       ├── business
 │       │   └── value_objects
-│       │       └── *_dto.go
+│       │       └── *_.go
 │       │   └── usecases
 │       │       └──  i_*_usecase.go
 │       │
@@ -70,15 +69,18 @@ Abaixo segue um esquemático simplificado da estrutura da aplicação:
 |       |
 │       ├── interfaces
 │       │   └── http
+|       |       └── factories
+│       │           └── *_factory.go
+│       │           └── *_factory_test.go
 |       |       └── handlers
 │       │           └── *_handler.go
 │       │           └── *_handler_test.go
-|       |       └── middleware
-│       │           └── *_middleware.go
-│       │           └── *_middleware_test.go
 |       |       └── presenters
 │       │           └── *_routes.go
 │       │           └── *_routes_test.go
+|       |       └── view_models
+│       │           └── *_viewmodels.go
+│       │           └── *_viewmodels_test.go
 │       │
 |       ├── main.go
 ```
