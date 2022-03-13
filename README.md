@@ -140,7 +140,7 @@ curl --location --request GET 'https://localhost:3333/api/v1/markets?distrito=VI
 ```
 >RESPONSE:
 - 200 - Resultado da consulta
-- 400 - Caso algum campo na invalido informado na query
+- 400 - Caso algum campo nao valido informado na query
 - 500 - Error interno
 
 ### PATCH /api/v1/markets/:registerCode
