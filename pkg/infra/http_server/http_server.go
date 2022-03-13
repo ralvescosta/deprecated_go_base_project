@@ -74,8 +74,10 @@ func (pst HTTPServer) Run() error {
 		certPath := os.Getenv("TLS_CERT_PATH")
 		keyPath := os.Getenv("TLS_KEY_PATH")
 
+		currentDir, _ := os.Getwd()
+
 		pst.logger.Info(fmt.Sprintf("[HttpServer::Run] - Server running at: https://%s", pst.addr))
-		err := pst.server.ListenAndServeTLS(certPath, keyPath)
+		err := pst.server.ListenAndServeTLS(currentDir+certPath, currentDir+keyPath)
 
 		return errors.NewInternalError(err.Error())
 	}

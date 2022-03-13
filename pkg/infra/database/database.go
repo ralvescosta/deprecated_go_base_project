@@ -85,7 +85,7 @@ func signalShotdown(db *sql.DB, logger interfaces.ILogger, secondsToSleep int, s
 	time.Sleep(time.Duration(secondsToSleep) * time.Second)
 	err := db.Ping()
 	if err != nil {
-		logger.Error(fmt.Sprintf("[Database::Connection] - Redis Connection failure : %s", err.Error()))
+		logger.Error(fmt.Sprintf("[Database::Connection] - Connection failure : %s", err.Error()))
 		shotdown <- true
 	}
 }
