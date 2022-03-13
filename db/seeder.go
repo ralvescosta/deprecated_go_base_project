@@ -76,6 +76,8 @@ func main() {
 	if err := environments.NewEnvironment().Configure(); err != nil {
 		log.Fatal(err)
 	}
+	os.Setenv("LOG_FILE", "./logs/seeder.log")
+
 	logger, err := logger.NewLogger()
 	if err != nil {
 		log.Fatal(err)
