@@ -1,5 +1,5 @@
 seeder:
-	GO_ENV=dev go run db/sedeer.go
+	GO_ENV=development go run ./db/seeder.go
 
 run:
 	GO_ENV=development GIN_MODE=debug go run main.go
@@ -16,3 +16,6 @@ test-cov:
 
 build:
 	go build -ldflags "-s -w" main.go
+
+docker-compose:
+	docker-compose -f docker-compose.yml up --build -d
