@@ -89,16 +89,19 @@ Com intuito de criar uma API REST foi utilizado o pacote Gin Web Framework para 
 
 Optou-se por utilizar PostgreSQL como mecanismo de persistência.
 
+Optou-se por nao traduzir as colunas na base de dados e os contratos JSON para manter integridade das informações e evitar alguma erro de tradução de algum termo técnico.
+
 Optou-se por utilizar a lib Zap para poder ser o gerenciador de logs da aplicação pois esta lib possui um ótimo resultado de benchmark comparado com outras libs como por exemplo o logrus.
 
 Implementou-se uma estratégia de Graceful Shutdown para quando ocorra a perda de conexão com o banco de dados a aplicação não “desligue” cortando todas as conexões TCP ativas. Desta forma perante a ausência do mongo a aplicação para de aceitar pedidos e espera todas as conexões TCP fecharem para poder encerrar a aplicação.
 
 ## Rotas
 
-> POST /api/v1/markets
+### POST /api/v1/markets
 
 Recurso utilizado registrar novas feiras
 
+>REQUEST:
 ```bash
 curl --location --request POST 'https://localhost:3333/api/v1/markets' \
 --header 'Content-Type: application/json' \
@@ -121,6 +124,72 @@ curl --location --request POST 'https://localhost:3333/api/v1/markets' \
     "referencia": "TV RUA PRETORIA"
 }'
 ```
+>RESPONSE:
+- 201 - Feira criado com sucesso
+- 200 - Feira ja criada anteriormente
+- 400 - Erro de contrato - Todos os campos sao obrigatórios para cadastro da feira
+- 500 - Error interno
+
+### GET /api/v1/markets?distrito=VILA FORMOSA&regiao5=Leste&nome_feira=VILA FORMOSA&bairro=VL FORMOSA
+
+Recurso utilizado para consultar feiras. Este recurso aceita todos os parâmetros existentes no registro de feiras
+
+>REQUEST:
+```bash
+curl --location --request GET 'https://localhost:3333/api/v1/markets?distrito=VILA FORMOSA&regiao5=Leste&nome_feira=VILA FORMOSA&bairro=VL FORMOSA'
+```
+>RESPONSE:
+- 200 - Resultado da consulta
+- 400 - Caso algum campo na invalido informado na query
+- 500 - Error interno
+
+### PATCH /api/v1/markets/:registerCode
+
+Recurso utilizado para atualizar uma feira ja cadastrada. O único campo que nao e possível atualizar e o capo 'registro'
+
+>REQUEST:
+```bash
+curl --location --request PATCH 'https://localhost:3333/api/v1/markets/4041-0' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "long": -46550162,
+    "lat": -23558733,
+    "setcens": "1234",
+    "areap": "3550308005040",
+    "coddist": 87,
+    "distrito": "VILA FORMOSA",
+    "codsubpref": 26,
+    "subpref": "ARICANDUVA-FORMOSA-CARRAO",
+    "regiao5": "Leste",
+    "regiao8": "Leste 1",
+    "nome_feira": "VILA FORMOSA",
+    "logradouro": "UA MARAGOJIPE",
+    "numero": "S/N",
+    "bairro": "VL FORMOSA",
+    "referencia": "TV RUA PRETORIA"
+}'
+```
+
+>RESPONSE:
+- 200 - Registro atualizado com sucesso
+- 400 - Error de contrato
+- 404 - Caso o registro solicitado a atualização nao exista na base de dados
+- 500 - Erro interno
+
+### DELETE /api/v1/markets/:registerCode
+
+Recurso utilizado para deletar um registro de feira na base de dados.
+
+>REQUEST:
+```bash
+curl --location --request DELETE 'https://localhost:3333/api/v1/markets/4041-0'
+```
+
+>RESPONSE:
+- 200 - Registro deletado com sucesso
+- 400 - Error de contrato
+- 404 - Caso o registro solicitado a atualização nao exista na base de dados
+- 500 - Erro interno
 
 ## Instalacao
 
@@ -128,6 +197,12 @@ curl --location --request POST 'https://localhost:3333/api/v1/markets' \
 
 ```bash
 make docker-compose
+```
+
+Apos execute o script de carga da base de dados
+
+```bash
+make seeder
 ```
 
 **OBS: Na pasta integration contem um par de collection e environment do postman com os endpoints criados para a aplicação.**
@@ -143,7 +218,13 @@ go get
 - Configurando o ambiente
 
 ```bash
-docker-compose -f docker-compose.environment.yml up -d
+docker-compose -f docker-compose.env.yml up -d
+```
+
+- Executando o seeder
+
+```base
+make seeder
 ```
 
 - Executando a aplicação
