@@ -38,7 +38,7 @@ func (pst marketHandlers) Create(httpRequest httpServer.HttpRequest) httpServer.
 	}
 
 	if validationErrs := pst.validator.ValidateStruct(vModel); validationErrs != nil {
-		pst.logger.Error(validationErrs[0].Message)
+		pst.logger.Error(fmt.Sprintf("[MarketHandler::Create] - Body unformatted - %s", validationErrs[0].Message))
 		return pst.httpResFactory.BadRequest(validationErrs[0].Message, nil)
 	}
 

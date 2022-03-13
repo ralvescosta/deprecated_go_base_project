@@ -53,4 +53,10 @@ func Test_NewSliceOfMarketViewModel(t *testing.T) {
 
 		assert.Equal(t, len(sut), len(vo))
 	})
+
+	t.Run("should return a empty viewmodel if receive empty valueObject", func(t *testing.T) {
+		sut := NewSliceOfMarketViewModel(nil)
+
+		assert.Equal(t, len(sut), 0)
+	})
 }
