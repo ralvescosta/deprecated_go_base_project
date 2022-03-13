@@ -2,3 +2,4 @@
 *bin
 coverage
 db/FEIRAS_LIVRES
+logs/*.log

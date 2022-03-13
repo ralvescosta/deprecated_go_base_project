@@ -4,6 +4,7 @@ services:
   postgres:
     image: postgres
     container_name: postgres
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -15,6 +16,7 @@ services:
       - ./db/migrate.sql:/docker-entrypoint-initdb.d/migrate.sql
 
   markets:
+    container_name: markets
     restart: unless-stopped
     build: .
     ports:
@@ -23,5 +25,7 @@ services:
       - GO_ENV=staging
       - LOGG_LEVEL=Info
       - GIN_MODE=release
+    volumes: 
+      - ./logs:/app/logs
     depends_on:
       - postgres

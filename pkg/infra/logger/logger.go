@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
+	"markets/pkg/app/errors"
 	"markets/pkg/app/interfaces"
 )
 
@@ -14,15 +15,35 @@ func NewLogger() (interfaces.ILogger, error) {
 
 	zapLogLevel := getLogLevel()
 
-	if goEnv == "production" || goEnv == "staging" {
-		return zap.NewProduction(zap.IncreaseLevel(zapLogLevel), zap.AddStacktrace(zap.ErrorLevel))
+	logFile := os.Getenv("LOG_FILE")
+	if logFile == "" {
+		return nil, errors.NewInternalError("missing log file configuration")
+	}
+	f, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return nil, err
 	}
 
-	config := zap.NewDevelopmentConfig()
-	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	config.Level.Enabled(zapLogLevel)
+	if goEnv == "production" || goEnv == "staging" {
+		config := zap.NewProductionEncoderConfig()
+		config.EncodeTime = zapcore.ISO8601TimeEncoder
+		fileEncoder := zapcore.NewJSONEncoder(config)
 
-	return config.Build()
+		core := zapcore.NewCore(fileEncoder, zapcore.AddSync(f), zapLogLevel)
+		return zap.New(core), nil
+	}
+
+	config := zap.NewDevelopmentEncoderConfig()
+	config.EncodeTime = zapcore.ISO8601TimeEncoder
+	config.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	fileEncoder := zapcore.NewJSONEncoder(config)
+	consoleEncoder := zapcore.NewConsoleEncoder(config)
+
+	core := zapcore.NewTee(
+		zapcore.NewCore(fileEncoder, zapcore.AddSync(f), zapLogLevel),
+		zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), zapLogLevel),
+	)
+	return zap.New(core), nil
 }
 
 func getLogLevel() zapcore.Level {
