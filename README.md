@@ -1,7 +1,7 @@
 # unico IDTech Challenge
 
 [![CircleCI](https://circleci.com/gh/ralvescosta/unico_idtech_challenge/tree/main.svg?style=svg)](https://circleci.com/gh/ralvescosta/unico_idtech_challenge/tree/main)
-[![codecov](https://codecov.io/gh/ralvescosta/unico_challenge/branch/main/graph/badge.svg?token=9FSVL883K1)](https://codecov.io/gh/ralvescosta/unico_challenge)
+[![codecov](https://codecov.io/gh/ralvescosta/unico_idtech_challenge/branch/main/graph/badge.svg?token=9FSVL883K1)](https://codecov.io/gh/ralvescosta/unico_idtech_challenge)
 ## Conteúdo
 - [Unico Challenge](#unico-challenge)
   - [Conteúdo](#conteudo)
