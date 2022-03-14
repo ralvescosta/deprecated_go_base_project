@@ -13,7 +13,7 @@ type createMarketUseCase struct {
 }
 
 func (pst createMarketUseCase) Execute(ctx context.Context, market valueObjects.MarketValueObjects) (valueObjects.MarketValueObjects, bool, error) {
-	marketCreated, err := pst.repo.Find(ctx, market)
+	marketCreated, err := pst.repo.Find(ctx, valueObjects.MarketValueObjects{Registro: market.Registro})
 	if err != nil {
 		return valueObjects.MarketValueObjects{}, false, err
 	}

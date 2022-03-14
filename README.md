@@ -126,7 +126,7 @@ curl --location --request POST 'https://localhost:3333/api/v1/markets' \
 ```
 >RESPONSE:
 - 201 - Feira criado com sucesso
-- 200 - Feira ja criada anteriormente
+- 200 - Caso exista uma feira cadastrada com o mesmo 'Registro', retorna a feira ja cadastrada.
 - 400 - Erro de contrato - Todos os campos sao obrigatórios para cadastro da feira
 - 500 - Error interno
 
@@ -223,14 +223,25 @@ docker-compose -f docker-compose.env.yml up -d
 
 - Executando o seeder
 
-```base
+```bash
 make seeder
+```
+ou
+
+```bash
+GO_ENV=development go run ./db/seeder.go
 ```
 
 - Executando a aplicação
 
 ```bash
 make run
+```
+
+ou
+
+```bash
+GO_ENV=development GIN_MODE=debug go run main.go
 ```
 
 - Executando a aplicação em modo Debug: Pressione F5
@@ -242,12 +253,30 @@ make run
 make test
 ```
 
+ou
+
+```bash
+GO_ENV=development GIN_MODE=debug go test ./pkg/... -v
+```
+
 ```bash
 make test-cov
+```
+
+ou
+
+```bash
+GO_ENV=development go test ./... -cover -v -coverprofile ./coverage/c.out && go tool cover -html=./coverage/c.out -o ./coverage/coverage.html
 ```
 
 - Para compilar a aplicação
 
 ```bash
 make build
+```
+
+ou
+
+```bash
+go build -ldflags "-s -w" main.go
 ```

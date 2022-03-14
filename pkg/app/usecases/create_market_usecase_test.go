@@ -18,7 +18,11 @@ func Test_CreateMarket_Execute(t *testing.T) {
 
 		ctx := context.Background()
 
-		sut.repo.On("Find", ctx, sut.marketMocked).Return([]valueObjects.MarketValueObjects(nil), nil)
+		sut.repo.On(
+			"Find",
+			ctx,
+			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+		).Return([]valueObjects.MarketValueObjects(nil), nil)
 		sut.repo.On("Create", ctx, sut.marketMocked).Return(sut.marketMocked, nil)
 
 		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
@@ -33,7 +37,11 @@ func Test_CreateMarket_Execute(t *testing.T) {
 
 		ctx := context.Background()
 
-		sut.repo.On("Find", ctx, sut.marketMocked).Return([]valueObjects.MarketValueObjects(nil), nil)
+		sut.repo.On(
+			"Find",
+			ctx,
+			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+		).Return([]valueObjects.MarketValueObjects(nil), nil)
 		sut.repo.On("Create", ctx, sut.marketMocked).Return(valueObjects.MarketValueObjects{}, errors.NewInternalError("some error"))
 
 		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
@@ -48,7 +56,11 @@ func Test_CreateMarket_Execute(t *testing.T) {
 
 		ctx := context.Background()
 
-		sut.repo.On("Find", ctx, sut.marketMocked).Return([]valueObjects.MarketValueObjects{{}}, nil)
+		sut.repo.On(
+			"Find",
+			ctx,
+			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+		).Return([]valueObjects.MarketValueObjects{{}}, nil)
 
 		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
 
@@ -62,7 +74,11 @@ func Test_CreateMarket_Execute(t *testing.T) {
 
 		ctx := context.Background()
 
-		sut.repo.On("Find", ctx, sut.marketMocked).Return([]valueObjects.MarketValueObjects(nil), errors.NewInternalError("some error"))
+		sut.repo.On(
+			"Find",
+			ctx,
+			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+		).Return([]valueObjects.MarketValueObjects(nil), errors.NewInternalError("some error"))
 
 		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
 
