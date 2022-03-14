@@ -89,7 +89,7 @@ Com intuito de criar uma API REST foi utilizado o pacote Gin Web Framework para 
 
 Optou-se por utilizar PostgreSQL como mecanismo de persistência.
 
-Optou-se por nao traduzir as colunas na base de dados e os contratos JSON para manter integridade das informações e evitar alguma erro de tradução de algum termo técnico.
+Optou-se por nao traduzir as colunas na base de dados e os contratos JSON para manter integridade das informações e evitar algum erro de tradução de algum termo técnico.
 
 Optou-se por utilizar a lib Zap para poder ser o gerenciador de logs da aplicação pois esta lib possui um ótimo resultado de benchmark comparado com outras libs como por exemplo o logrus.
 
@@ -145,7 +145,7 @@ curl --location --request GET 'https://localhost:3333/api/v1/markets?distrito=VI
 
 ### PATCH /api/v1/markets/:registerCode
 
-Recurso utilizado para atualizar uma feira ja cadastrada. O único campo que nao e possível atualizar e o capo 'registro'
+Recurso utilizado para atualizar uma feira ja cadastrada. O único campo que nao é possível atualizar é o capo 'registro'
 
 >REQUEST:
 ```bash
