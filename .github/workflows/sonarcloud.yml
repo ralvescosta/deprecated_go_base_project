@@ -1,0 +1,27 @@
+name: SonarCloud
+on:
+ push:
+   branches:
+     - main
+ pull_request:
+   types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 
+      
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Test and coverage
+        run: GO_ENV=development go test ./... -race -coverprofile=coverage.out -json > report.json
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
