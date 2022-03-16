@@ -19,6 +19,9 @@ jobs:
 
       - name: Test and coverage
         run: GO_ENV=development go test ./... -race -coverprofile=coverage.out -json > report.json
+      
+      - name: Vet
+        run: go vet -json ./... 2> govet-report.json
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
