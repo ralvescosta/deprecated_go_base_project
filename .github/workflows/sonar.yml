@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           go mod download
-          go get -u golang.org/x/lint/golint
+          go install golang.org/x/lint/golint
 
       - name: Test and coverage
         run: GO_ENV=development go test ./... -race -coverprofile=coverage.out -json > report.json
