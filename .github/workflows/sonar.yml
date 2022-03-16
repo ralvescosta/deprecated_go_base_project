@@ -1,4 +1,4 @@
-name: SonarCloud
+name: sonar
 on:
  push:
    branches:
@@ -6,22 +6,29 @@ on:
  pull_request:
    types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud:
+  sonar:
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0 
+          fetch-depth: 2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.17'
       
       - name: Install dependencies
-        run: go mod download
+        run: |
+          go mod download
+          go get -u golang.org/x/lint/golint
 
       - name: Test and coverage
         run: GO_ENV=development go test ./... -race -coverprofile=coverage.out -json > report.json
       
-      - name: Vet
-        run: go vet -json ./... 2> govet-report.json
+      - name: Go Vet & Lint
+        run: |
+          go vet ./... 2> govet-report.out
+          golint ./... > golint-report.out
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
