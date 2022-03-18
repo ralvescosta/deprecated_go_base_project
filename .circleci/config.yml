@@ -79,5 +79,5 @@ workflows:
     jobs:
       - ci
       - build:
-        requires:
-          - ci
+          requires:
+            - ci
