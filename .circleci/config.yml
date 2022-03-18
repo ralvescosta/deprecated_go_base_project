@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  tests:
+  ci:
     working_directory: ~/repo
     docker:
       - image: circleci/golang:1.17
@@ -10,13 +10,16 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
+
       - run:
           name: Install Dependencies
           command: go mod download
+
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
+
       - run:
           name: Run unit tests
           command: |
@@ -24,14 +27,22 @@ jobs:
             gotestsum --junitfile /tmp/test-reports/unit-tests.xml
       - store_test_results:
           path: /tmp/test-reports
+
       - run:
           name: Run coverage
           command: |
-            go test ./... -cover -v -coverprofile ./c.out
-            go tool cover -html=c.out -o coverage.html
-            mv coverage.html /tmp/artifacts
-      - store_artifacts:
-          path: /tmp/artifacts
+            go test ./... -race -coverprofile=coverage.out -json > report.json
+
+      - run:
+          name: Run Go Lint
+          command: |
+            go get -u -v golang.org/x/lint/golint
+            go install -v golang.org/x/lint/golint
+            golint ./... > golint-report.out
+
+      - sonarcloud/scan:
+          sonar_token_variable_name: SONAR_TOKEN
+
   build:
     working_directory: ~/repo
     docker:
@@ -41,13 +52,16 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
+
       - run:
           name: Install Dependencies
           command: go mod download
+
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
+
       - run:
           name: Run build
           command: |
@@ -57,11 +71,13 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts/build
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.3
+
 workflows:
-  main: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  main:
     jobs:
-      - tests
-      - build
+      - ci
+      - build:
+          requires:
+            - ci
