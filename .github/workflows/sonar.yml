@@ -18,16 +18,19 @@ jobs:
           go-version: '1.17'
       
       - name: Install dependencies
-        run: |
+        run:
           go mod download
-          go install golang.org/x/lint/golint
 
       - name: Test and coverage
         run: GO_ENV=development go test ./... -race -coverprofile=coverage.out -json > report.json
       
-      - name: Go Vet & Lint
-        run: |
+      - name: Go Vet 
+        run:
           go vet ./... 2> govet-report.out
+        
+      - name: Go Lint
+        run: |
+          go install golang.org/x/lint/golint
           golint ./... > golint-report.out
 
       - name: SonarCloud Scan
