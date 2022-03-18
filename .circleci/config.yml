@@ -60,7 +60,7 @@ jobs:
       - image: circleci/golang:1.17
     steps:
       - attach_workspace:
-          at: /repo/workspace
+          at: ~/repo/workspace
 
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
