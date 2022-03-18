@@ -2,13 +2,13 @@ version: 2.1
 
 jobs:
   test_and_coverage:
-    working_directory: ~/repo
+    working_directory: /repo
     docker:
       - image: circleci/golang:1.17
     steps:
       - checkout
       - persist_to_workspace:
-          root: /
+          root: /workspace
           paths: 
             - sonar-project.properties
 
@@ -38,7 +38,7 @@ jobs:
           command: |
             go test ./... -race -coverprofile=coverage.out -json > report.json
       - persist_to_workspace:
-          root: /
+          root: /workspace
           paths: 
             - coverage.out
             - report.json
@@ -50,17 +50,17 @@ jobs:
             go install -v golang.org/x/lint/golint
             golint ./... > golint-report.out
       - persist_to_workspace:
-          root: /
+          root: /workspace
           paths: 
             - golint-report.out
 
   sonar:
-    working_directory: ~/repo
+    working_directory: /repo
     docker:
       - image: circleci/golang:1.17
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: /repo/workspace
 
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
