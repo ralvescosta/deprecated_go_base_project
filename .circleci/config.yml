@@ -34,7 +34,8 @@ jobs:
             go install -v golang.org/x/lint/golint
             golint ./... > golint-report.out
 
-      - sonarcloud/scan
+      - sonarcloud/scan:
+          sonar_token_variable_name: '514d8d9518534ab2cb8abcf77cc9866596b6fd29' 
 
   build:
     working_directory: ~/repo
