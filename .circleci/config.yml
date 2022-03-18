@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  sonar:
+  ci:
     working_directory: ~/repo
     docker:
       - image: circleci/golang:1.17
@@ -36,9 +36,12 @@ jobs:
       - run:
           name: Run Go Lint
           command: |
-            go get -u -v golang.org/x/lint/golint
-            go install -v golang.org/x/lint/golint
-            golint ./... > golint-report.out
+            go vet ./... 2> govet-report.out
+
+      - run:
+          name: Run Go Vet
+          command: |
+            go vet ./... 2> govet-report.out
 
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
@@ -77,5 +80,5 @@ orbs:
 workflows:
   main:
     jobs:
-      - sonar
+      - ci
       - build

@@ -1,7 +1,6 @@
 # unico IDTech Challenge
 
 [![CircleCI](https://circleci.com/gh/ralvescosta/unico_idtech_challenge/tree/main.svg?style=svg)](https://circleci.com/gh/ralvescosta/unico_idtech_challenge/tree/main)
-[![codecov](https://codecov.io/gh/ralvescosta/unico_idtech_challenge/branch/main/graph/badge.svg?token=9FSVL883K1)](https://codecov.io/gh/ralvescosta/unico_idtech_challenge)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ralvescosta_unico_idtech_challenge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ralvescosta_unico_idtech_challenge)
 ## Conteúdo
 - [Unico Challenge](#unico-challenge)
