@@ -7,11 +7,6 @@ jobs:
       - image: circleci/golang:1.17
     steps:
       - checkout
-      - persist_to_workspace:
-          root: /workspace
-          paths: 
-            - sonar-project.properties
-
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
@@ -38,8 +33,9 @@ jobs:
           command: |
             go test ./... -race -coverprofile=coverage.out -json > report.json
       - persist_to_workspace:
-          root: /workspace
+          root: ~/repo
           paths: 
+            - sonar-project.properties
             - coverage.out
             - report.json
 
@@ -50,7 +46,7 @@ jobs:
             go install -v golang.org/x/lint/golint
             golint ./... > golint-report.out
       - persist_to_workspace:
-          root: /workspace
+          root: ~/repo
           paths: 
             - golint-report.out
 
@@ -60,7 +56,7 @@ jobs:
       - image: circleci/golang:1.17
     steps:
       - attach_workspace:
-          at: ~/repo/workspace
+          at: ~/repo
 
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
