@@ -26,6 +26,11 @@ jobs:
             - "/go/pkg/mod"
 
       - run:
+          name: Run Vet
+          command: |
+            go vet ./...
+
+      - run:
           name: Run unit tests
           command: |
             mkdir -p /tmp/test-reports
@@ -97,7 +102,7 @@ orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.3
 
 workflows:
-  main:
+  ci:
     jobs:
       - test_and_coverage
       - sonar:
