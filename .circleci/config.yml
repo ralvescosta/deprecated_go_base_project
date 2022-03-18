@@ -36,12 +36,9 @@ jobs:
       - run:
           name: Run Go Lint
           command: |
-            go vet ./... 2> govet-report.out
-
-      - run:
-          name: Run Go Vet
-          command: |
-            go vet ./... 2> govet-report.out
+            go get -u -v golang.org/x/lint/golint
+            go install -v golang.org/x/lint/golint
+            golint ./... > golint-report.out
 
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
@@ -81,4 +78,6 @@ workflows:
   main:
     jobs:
       - ci
-      - build
+      - build:
+        requires:
+          - ci
