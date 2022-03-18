@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Run Vet
           command: |
-            go vet ./...
+            go vet ~/repo/pkg/...
 
       - run:
           name: Run unit tests
