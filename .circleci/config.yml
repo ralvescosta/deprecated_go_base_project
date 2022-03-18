@@ -35,7 +35,7 @@ jobs:
             golint ./... > golint-report.out
 
       - sonarcloud/scan:
-          sonar_token_variable_name: '514d8d9518534ab2cb8abcf77cc9866596b6fd29' 
+          sonar_token_variable_name: SONAR_TOKEN
 
   build:
     working_directory: ~/repo
