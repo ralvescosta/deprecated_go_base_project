@@ -25,10 +25,7 @@ jobs:
         run: GO_ENV=development go test ./... -race -coverprofile=coverage.out -json > report.json
       
       - name: Go Vet 
-        run: |
-          go get -u -v golang.org/x/tools/cmd/vet
-          go install -v golang.org/x/tools/cmd/vet
-          go vet ./... 2> govet-report.out
+        run: go vet ./... 2> govet-report.out
         
       - name: Go Lint
         run: |
