@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  sonar:
+  tests:
     working_directory: ~/repo
     docker:
       - image: circleci/golang:1.17
@@ -10,32 +10,28 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-
       - run:
           name: Install Dependencies
           command: go mod download
-
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
-
+      - run:
+          name: Run unit tests
+          command: |
+            mkdir -p /tmp/test-reports
+            gotestsum --junitfile /tmp/test-reports/unit-tests.xml
+      - store_test_results:
+          path: /tmp/test-reports
       - run:
           name: Run coverage
           command: |
-            go test ./... -race -coverprofile=coverage.out -json > report.json
-            go tool cover -html=coverage.out -o coverage.html
+            go test ./... -cover -v -coverprofile ./c.out
+            go tool cover -html=c.out -o coverage.html
             mv coverage.html /tmp/artifacts
-
-      - run:
-          name: Run Go Lint
-          command: |
-            go get -u -v golang.org/x/lint/golint
-            go install -v golang.org/x/lint/golint
-            golint ./... > golint-report.out
-
-      - sonarcloud/scan
-
+      - store_artifacts:
+          path: /tmp/artifacts
   build:
     working_directory: ~/repo
     docker:
@@ -45,16 +41,13 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-
       - run:
           name: Install Dependencies
           command: go mod download
-
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
-
       - run:
           name: Run build
           command: |
@@ -64,11 +57,11 @@ jobs:
       - store_artifacts:
           path: /tmp/artifacts/build
 
-orbs:
-  sonarcloud: sonarsource/sonarcloud@1.0.3
-
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  main:
+  main: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - sonar
+      - tests
       - build
