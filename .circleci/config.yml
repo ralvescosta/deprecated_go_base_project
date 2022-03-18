@@ -41,6 +41,8 @@ jobs:
             golint ./... > golint-report.out
 
   sonar:
+    docker:
+      - image: circleci/golang:1.17
     steps:
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
