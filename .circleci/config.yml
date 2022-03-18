@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   test_and_coverage:
-    working_directory: /repo
+    working_directory: ~/repo
     docker:
       - image: circleci/golang:1.17
     steps:
@@ -55,7 +55,7 @@ jobs:
             - golint-report.out
 
   sonar:
-    working_directory: /repo
+    working_directory: ~/repo
     docker:
       - image: circleci/golang:1.17
     steps:
