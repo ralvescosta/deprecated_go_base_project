@@ -21,11 +21,17 @@ jobs:
             - "/go/pkg/mod"
 
       - run:
+          name: Run unit tests
+          command: |
+            mkdir -p /tmp/test-reports
+            gotestsum --junitfile /tmp/test-reports/unit-tests.xml
+      - store_test_results:
+          path: /tmp/test-reports
+
+      - run:
           name: Run coverage
           command: |
             go test ./... -race -coverprofile=coverage.out -json > report.json
-            go tool cover -html=coverage.out -o coverage.html
-            mv coverage.html /tmp/artifacts
 
       - run:
           name: Run Go Lint
