@@ -24,8 +24,8 @@ jobs:
       - name: Test and coverage
         run: GO_ENV=development go test ./... -race -coverprofile=coverage.out -json > report.json
       
-      # - name: Go Vet 
-      #   run: go vet ./... 2> govet-report.out
+      - name: Go Vet 
+        run: go vet ./... 2> govet-report.out
         
       - name: Go Lint
         run: |
