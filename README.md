@@ -12,7 +12,7 @@
 
 ## Estrutura do projeto
 
-O projeto foi estruturado em camadas viabilizando a utilização de alguns padrões de projetos e alguns princípios arquiteturais obtendo assim uma aplicação testável e de fácil manutenção. As principais camadas do projeto são: 
+O projeto foi estruturado em camadas viabilizando a utilização de alguns padrões de projetos e alguns princípios arquiteturais obtendo assim uma aplicação testável e de fácil manutenção. As principais camadas do projeto são:
 
 - **cmd**: Seguindo o padrão da comunidade, esta camada é utilizada para gerenciar configurações iniciais e execução da aplicação.
 
