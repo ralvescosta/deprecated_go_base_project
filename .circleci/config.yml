@@ -7,6 +7,11 @@ jobs:
       - image: circleci/golang:1.17
     steps:
       - checkout
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - pkg
+            - sonar-project.properties
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
@@ -35,7 +40,6 @@ jobs:
       - persist_to_workspace:
           root: ~/repo
           paths: 
-            - sonar-project.properties
             - coverage.out
             - report.json
 
