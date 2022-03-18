@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  ci:
+  test_and_coverage:
     working_directory: ~/repo
     docker:
       - image: circleci/golang:1.17
@@ -40,6 +40,8 @@ jobs:
             go install -v golang.org/x/lint/golint
             golint ./... > golint-report.out
 
+  sonar:
+    steps:
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
 
@@ -77,7 +79,11 @@ orbs:
 workflows:
   main:
     jobs:
-      - ci
+      - test_and_coverage
+      - sonar:
+          requires:
+            - test_and_coverage
       - build:
           requires:
-            - ci
+            - test_and_coverage
+            - sonar
