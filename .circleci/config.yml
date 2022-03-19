@@ -7,7 +7,7 @@ jobs:
       - image: golangci/golangci-lint:v1.45
     steps:
       - checkout
-      - run: golangci-lint run --out-format=github-actions
+      - run: golangci-lint run --out-format=github-actions -v
       - persist_to_workspace:
           root: ~/repo
           paths: 
