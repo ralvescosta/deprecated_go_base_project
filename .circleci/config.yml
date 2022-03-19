@@ -7,7 +7,7 @@ jobs:
       - image: golangci/golangci-lint:v1.45
     steps:
       - checkout
-      - run:  golangci-lint run ./... --out-format=checkstyle --issues-exit-code=2 --print-issued-lines=false --print-linter-name=false -v
+      - run:  golangci-lint run ./... --out-format=checkstyle --issues-exit-code=5 --print-issued-lines=false --print-linter-name=false -v
       - persist_to_workspace:
           root: ~/repo
           paths: 
