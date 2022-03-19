@@ -7,11 +7,11 @@ jobs:
       - image: golangci/golangci-lint:v1.45
     steps:
       - checkout
-      - run: golangci-lint run ./... --out-format=checkstyle --print-issued-lines=false --print-linter-name=false --issues-exit-code=0 --enable=revive -v
-      # - persist_to_workspace:
-      #     root: ~/repo
-      #     paths: 
-      #       - golanci-report.xml
+      - run: golangci-lint run ./... --out-format=checkstyle --print-issued-lines=false --print-linter-name=false --issues-exit-code=0 --enable=revive > golanci-report.xml
+      - persist_to_workspace:
+          root: ~/repo
+          paths: 
+            - golanci-report.xml
 
   test_and_coverage:
     working_directory: ~/repo
@@ -101,11 +101,11 @@ workflows:
   ci:
     jobs:
       - lint
-      # - test_and_coverage
-      # - sonar:
-      #     requires:
-      #       - lint
-      #       - test_and_coverage
-      # - build:
-      #     requires:
-      #       - sonar
+      - test_and_coverage
+      - sonar:
+          requires:
+            - lint
+            - test_and_coverage
+      - build:
+          requires:
+            - sonar
