@@ -4,7 +4,7 @@ jobs:
   lint:
     working_directory: ~/repo
     docker:
-      - image: golangci/golangci-lint:v1.45-alpine
+      - image: golangci/golangci-lint:v1.45
     steps:
       - checkout
       - run: golangci-lint run --out-format=checkstyle > golanci-report.xml
