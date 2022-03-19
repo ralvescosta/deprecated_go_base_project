@@ -1,6 +1,18 @@
 version: 2.1
 
 jobs:
+  lint:
+    working_directory: ~/repo
+    docker:
+      - image: golangci/golangci-lint:v1.37-alpine
+    steps:
+      - checkout
+      - run: golangci-lint run --out-format=checkstyle > golanci-report.xml
+      - persist_to_workspace:
+          root: ~/repo
+          paths: 
+            - golanci-report.xml
+
   test_and_coverage:
     working_directory: ~/repo
     docker:
@@ -42,16 +54,6 @@ jobs:
           paths: 
             - coverage.out
             - report.json
-
-      - run:
-          name: Go Lint 
-          command: |
-            go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-            golangci-lint run ./... > gometalinter-report.out
-      - persist_to_workspace:
-          root: ~/repo
-          paths: 
-            - gometalinter-report.out
 
   sonar:
     working_directory: ~/repo
@@ -98,11 +100,12 @@ orbs:
 workflows:
   ci:
     jobs:
+      - lint
       - test_and_coverage
       - sonar:
           requires:
+            - lint
             - test_and_coverage
       - build:
           requires:
-            - test_and_coverage
             - sonar
