@@ -7,7 +7,7 @@ jobs:
       - image: golangci/golangci-lint:v1.45
     steps:
       - checkout
-      - run: golangci-lint run ~/repo/pkg/... --out-format=github-actions -v
+      - run: golangci-lint run ./... --out-format=checkstyle --disable=govet -v
       - persist_to_workspace:
           root: ~/repo
           paths: 
@@ -101,11 +101,11 @@ workflows:
   ci:
     jobs:
       - lint
-      - test_and_coverage
-      - sonar:
-          requires:
-            - lint
-            - test_and_coverage
-      - build:
-          requires:
-            - sonar
+      # - test_and_coverage
+      # - sonar:
+      #     requires:
+      #       - lint
+      #       - test_and_coverage
+      # - build:
+      #     requires:
+      #       - sonar
