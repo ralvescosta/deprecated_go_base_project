@@ -26,11 +26,6 @@ jobs:
             - "/go/pkg/mod"
 
       - run:
-          name: Run Vet
-          command: |
-            go vet ~/repo/pkg/...
-
-      - run:
           name: Run unit tests
           command: |
             mkdir -p /tmp/test-reports
@@ -49,15 +44,14 @@ jobs:
             - report.json
 
       - run:
-          name: Run Go Lint
+          name: Go Lint 
           command: |
-            go get -u -v golang.org/x/lint/golint
-            go install -v golang.org/x/lint/golint
-            golint ./... > golint-report.out
+            go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+            golangci-lint run ./... > gometalinter-report.out
       - persist_to_workspace:
           root: ~/repo
           paths: 
-            - golint-report.out
+            - gometalinter-report.out
 
   sonar:
     working_directory: ~/repo
