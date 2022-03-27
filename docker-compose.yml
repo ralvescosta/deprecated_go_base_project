@@ -1,6 +1,25 @@
 version: "3.7"
 
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.6.2
+    links:
+      - elasticsearch
+    volumes:
+      - .:/etc/logstash
+    command: logstash -f /etc/logstash/logstash.conf
+    ports:
+      - 12201:12201/udp
+    depends_on:
+      - elasticsearch
+
   postgres:
     image: postgres
     container_name: postgres
@@ -14,6 +33,26 @@ services:
     volumes: 
       - ./postgres-data:/var/lib/database/data
       - ./db/migrate.sql:/docker-entrypoint-initdb.d/migrate.sql
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "unico_idtech_postgres"
+    depends_on:
+      - logstash
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.6.2
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+      - logstash
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "unico_idtech_kibana"
 
   markets:
     container_name: markets
@@ -25,7 +64,10 @@ services:
       - GO_ENV=staging
       - LOGG_LEVEL=Info
       - GIN_MODE=release
-    volumes: 
-      - ./logs:/app/logs
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "unico_idtech_app"
     depends_on:
       - postgres
