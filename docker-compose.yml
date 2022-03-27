@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3"
 
 services:
   elasticsearch:
@@ -27,7 +27,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=unico
+      - POSTGRES_DB=project
     ports:
       - 5432:5432
     volumes: 
@@ -37,7 +37,7 @@ services:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "unico_idtech_postgres"
+        tag: "project_postgres"
     depends_on:
       - logstash
 
@@ -52,7 +52,7 @@ services:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "unico_idtech_kibana"
+        tag: "project_kibana"
 
   markets:
     container_name: markets
@@ -62,12 +62,35 @@ services:
       - 3333:3333
     environment: 
       - GO_ENV=staging
-      - LOGG_LEVEL=Info
+      - LOGG_LEVEL=info
       - GIN_MODE=release
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "unico_idtech_app"
+        tag: "project_app"
     depends_on:
       - postgres
+
+  apm:
+    image: docker.elastic.co/apm/apm-server:7.6.2
+    cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
+    cap_drop: ["ALL"]
+    ports:
+      - 8200:8200
+    command: >
+       apm-server -e
+         -E apm-server.rum.enabled=true
+         -E setup.kibana.host=kibana:5601
+         -E setup.template.settings.index.number_of_replicas=0
+         -E apm-server.kibana.enabled=true
+         -E apm-server.kibana.host=kibana:5601
+         -E output.elasticsearch.hosts=["elasticsearch:9200"]
+    depends_on:
+      - elasticsearch
+      - kibana
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "project_apm"

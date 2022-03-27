@@ -10,10 +10,11 @@ import (
 	"markets/pkg/app/errors"
 	"markets/pkg/app/interfaces"
 
-	_ "github.com/lib/pq"
+	"go.elastic.co/apm/module/apmsql"
+	_ "go.elastic.co/apm/module/apmsql/pq"
 )
 
-var open = sql.Open
+var open = apmsql.Open
 
 func Connect(logger interfaces.ILogger, shotdown chan bool) (*sql.DB, error) {
 	connString, err := getConnectionString()
