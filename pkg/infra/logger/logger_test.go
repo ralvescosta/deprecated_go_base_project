@@ -12,7 +12,6 @@ func Test_Logger(t *testing.T) {
 	t.Run("should create development logger correctly", func(t *testing.T) {
 		os.Setenv("LOG_LEVEL", "debug")
 		os.Setenv("GO_ENV", "development")
-		os.Setenv("LOG_FILE", "../../../logs/test.log")
 		logger, err := NewLogger()
 
 		assert.NoError(t, err)
@@ -22,7 +21,6 @@ func Test_Logger(t *testing.T) {
 	t.Run("should create production logger correctly", func(t *testing.T) {
 		os.Setenv("LOG_LEVEL", "warn")
 		os.Setenv("GO_ENV", "production")
-		os.Setenv("LOG_FILE", "../../../logs/test.log")
 
 		logger, err := NewLogger()
 
@@ -33,7 +31,6 @@ func Test_Logger(t *testing.T) {
 	t.Run("should create logger with different logger level", func(t *testing.T) {
 		os.Setenv("LOG_LEVEL", "info")
 		os.Setenv("GO_ENV", "development")
-		os.Setenv("LOG_FILE", "../../../logs/test.log")
 
 		logger, err := NewLogger()
 
