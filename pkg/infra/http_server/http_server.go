@@ -11,6 +11,7 @@ import (
 	"markets/pkg/app/interfaces"
 
 	"github.com/gin-gonic/gin"
+	apm "go.elastic.co/apm/module/apmgin/v2"
 )
 
 type IHTTPServer interface {
@@ -34,8 +35,8 @@ var httpServerWrapper = gin.New
 func (pst *HTTPServer) Default() {
 	pst.router = httpServerWrapper()
 	pst.router.Use(GinLogger(pst.logger))
+	pst.router.Use(apm.Middleware(pst.router)) //apm also carry about the recovery
 	pst.router.SetTrustedProxies(nil)
-	pst.router.Use(gin.Recovery())
 }
 
 func (hs HTTPServer) RegisterRoute(method string, path string, handlers ...gin.HandlerFunc) error {
