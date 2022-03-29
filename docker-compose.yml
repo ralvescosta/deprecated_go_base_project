@@ -54,8 +54,8 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "project_kibana"
 
-  markets:
-    container_name: markets
+  project:
+    container_name: project
     restart: unless-stopped
     build: .
     ports:
@@ -64,6 +64,10 @@ services:
       - GO_ENV=staging
       - LOGG_LEVEL=info
       - GIN_MODE=release
+      - ELASTIC_APM_SERVICE_NAME=project
+      - ELASTIC_APM_SERVICE_VERSION=0.0.1
+      - ELASTIC_APM_SERVER_URL=http://apm:8200
+      - ELASTIC_APM_ENVIRONMENT=production
     logging:
       driver: gelf
       options:
