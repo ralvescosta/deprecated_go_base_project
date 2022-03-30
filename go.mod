@@ -9,6 +9,8 @@ require (
 	github.com/lib/pq v1.10.4
 	github.com/ralvescosta/dotenv v1.0.4
 	github.com/stretchr/testify v1.7.0
+	go.elastic.co/apm/module/apmgin/v2 v2.0.0
+	go.elastic.co/apm/v2 v2.0.0
 	go.uber.org/zap v1.21.0
 )
 
@@ -35,16 +37,11 @@ require (
 	github.com/santhosh-tekuri/jsonschema v1.2.4 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
-	go.elastic.co/apm v1.15.0 // indirect
-	go.elastic.co/apm/module/apmgin/v2 v2.0.0 // indirect
 	go.elastic.co/apm/module/apmhttp/v2 v2.0.0 // indirect
-	go.elastic.co/apm/module/apmsql v1.15.0 // indirect
-	go.elastic.co/apm/v2 v2.0.0 // indirect
 	go.elastic.co/fastjson v1.1.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70 // indirect
-	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220106191415-9b9b3d81d5e3 // indirect
 	golang.org/x/sys v0.0.0-20220310020820-b874c991c1a5 // indirect
 	golang.org/x/text v0.3.7 // indirect
