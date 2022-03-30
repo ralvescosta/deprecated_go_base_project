@@ -11,6 +11,8 @@ import (
 	"markets/pkg/app/interfaces"
 	valueObjects "markets/pkg/domain/value_objects"
 	"markets/pkg/infra/database/models"
+
+	apm "go.elastic.co/apm/v2"
 )
 
 type marketRepository struct {
@@ -28,6 +30,8 @@ func (pst marketRepository) Create(ctx context.Context, market valueObjects.Mark
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
 		RETURNING *
 	`
+	instrument(ctx, "INSERT INTO feiras", sql)
+
 	prepare, err := pst.db.PrepareContext(ctx, sql)
 	if err != nil {
 		pst.logger.Error("[MarketRepository::Create] Error in prepare statement")
@@ -76,9 +80,11 @@ func (pst marketRepository) Find(ctx context.Context, market valueObjects.Market
 					FROM feiras
 					WHERE deletado_em IS NULL`
 
-	where, fields := buildQuery("AND", "", market)
+	instrument(ctx, "SELECT FROM feiras", sql)
 
+	where, fields := buildQuery("AND", "", market)
 	sql += where
+
 	prepare, err := pst.db.PrepareContext(ctx, sql)
 	if err != nil {
 		pst.logger.Error("[MarketRepository::Find] Error in prepare statement")
@@ -107,6 +113,8 @@ func (pst marketRepository) Find(ctx context.Context, market valueObjects.Market
 
 func (pst marketRepository) Update(ctx context.Context, registerCode string, market valueObjects.MarketValueObjects) (valueObjects.MarketValueObjects, error) {
 	sql := `UPDATE feiras  SET `
+
+	instrument(ctx, "UPDATE feiras", sql)
 
 	set, fields := buildQuery("", ",", market)
 	fields = append(fields, registerCode)
@@ -137,6 +145,8 @@ func (pst marketRepository) Update(ctx context.Context, registerCode string, mar
 
 func (pst marketRepository) Delete(ctx context.Context, registerCode string) error {
 	sql := `UPDATE feiras SET deletado_em = $1 WHERE registro = $2`
+
+	instrument(ctx, "SOFTDELETE feiras", sql)
 
 	prepare, err := pst.db.PrepareContext(ctx, sql)
 	if err != nil {
@@ -192,6 +202,17 @@ func (pst marketRepository) scan(row IRow) (valueObjects.MarketValueObjects, err
 		return valueObjects.MarketValueObjects{}, errors.NewInternalError("error in scanning the results")
 	}
 	return model.ToValueObject(), nil
+}
+
+func instrument(ctx context.Context, name, query string) {
+	span, _ := apm.StartSpan(ctx, name, "db.postgre.query")
+	span.Context.SetDatabase(apm.DatabaseSpanContext{
+		Instance:  "postgres",
+		Statement: query,
+		Type:      "sql",
+		User:      "project",
+	})
+	span.End()
 }
 
 func NewMarketRepository(logger interfaces.ILogger, db *sql.DB) interfaces.IMarketRepository {
