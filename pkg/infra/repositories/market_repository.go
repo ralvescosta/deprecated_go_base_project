@@ -30,7 +30,8 @@ func (pst marketRepository) Create(ctx context.Context, market valueObjects.Mark
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
 		RETURNING *
 	`
-	instrument(ctx, "INSERT INTO feiras", sql)
+	dispose := instrument(ctx, "INSERT INTO feiras", sql)
+	defer dispose()
 
 	prepare, err := pst.db.PrepareContext(ctx, sql)
 	if err != nil {
@@ -80,7 +81,8 @@ func (pst marketRepository) Find(ctx context.Context, market valueObjects.Market
 					FROM feiras
 					WHERE deletado_em IS NULL`
 
-	instrument(ctx, "SELECT FROM feiras", sql)
+	dispose := instrument(ctx, "SELECT FROM feiras", sql)
+	defer dispose()
 
 	where, fields := buildQuery("AND", "", market)
 	sql += where
@@ -114,7 +116,8 @@ func (pst marketRepository) Find(ctx context.Context, market valueObjects.Market
 func (pst marketRepository) Update(ctx context.Context, registerCode string, market valueObjects.MarketValueObjects) (valueObjects.MarketValueObjects, error) {
 	sql := `UPDATE feiras  SET `
 
-	instrument(ctx, "UPDATE feiras", sql)
+	diapose := instrument(ctx, "UPDATE feiras", sql)
+	defer diapose()
 
 	set, fields := buildQuery("", ",", market)
 	fields = append(fields, registerCode)
@@ -146,7 +149,8 @@ func (pst marketRepository) Update(ctx context.Context, registerCode string, mar
 func (pst marketRepository) Delete(ctx context.Context, registerCode string) error {
 	sql := `UPDATE feiras SET deletado_em = $1 WHERE registro = $2`
 
-	instrument(ctx, "SOFTDELETE feiras", sql)
+	dispose := instrument(ctx, "SOFTDELETE feiras", sql)
+	defer dispose()
 
 	prepare, err := pst.db.PrepareContext(ctx, sql)
 	if err != nil {
@@ -204,7 +208,7 @@ func (pst marketRepository) scan(row IRow) (valueObjects.MarketValueObjects, err
 	return model.ToValueObject(), nil
 }
 
-func instrument(ctx context.Context, name, query string) {
+func instrument(ctx context.Context, name, query string) (dispose func()) {
 	span, _ := apm.StartSpan(ctx, name, "db.postgre.query")
 	span.Context.SetDatabase(apm.DatabaseSpanContext{
 		Instance:  "postgres",
@@ -212,7 +216,10 @@ func instrument(ctx context.Context, name, query string) {
 		Type:      "sql",
 		User:      "project",
 	})
-	span.End()
+
+	return func() {
+		span.End()
+	}
 }
 
 func NewMarketRepository(logger interfaces.ILogger, db *sql.DB) interfaces.IMarketRepository {
