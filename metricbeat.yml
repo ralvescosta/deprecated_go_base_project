@@ -1,0 +1,11 @@
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  username: "elastic"
+  password: "elastic"
+setup.kibana:
+  host: "kibana:5601"
+
+metricbeat.modules:
+- module: elasticsearch
+  period: 10s
+  hosts: ["http://elasticsearch:9200"]
