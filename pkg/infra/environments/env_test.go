@@ -38,6 +38,22 @@ func Test_Configure(t *testing.T) {
 		assert.Equal(t, ".env.production", envFile)
 	})
 
+	t.Run("should configure profile env using the APP_PROFILLING", func(t *testing.T) {
+		os.Setenv("APP_PROFILING", "enabled")
+
+		env := NewEnvironment()
+
+		assert.Equal(t, "enabled", env.PROFILING_ENV())
+	})
+
+	t.Run("should configure profile env when do not have APP_PROFILLING", func(t *testing.T) {
+		os.Setenv("APP_PROFILING", "")
+
+		env := NewEnvironment()
+
+		assert.Equal(t, "disabled", env.PROFILING_ENV())
+	})
+
 	t.Run("should return err if some error occur", func(t *testing.T) {
 		dotEnvConfig = func(arg string) error {
 			return errors.New("some error")
