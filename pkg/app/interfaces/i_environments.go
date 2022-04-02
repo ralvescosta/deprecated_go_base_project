@@ -6,4 +6,5 @@ type IEnvironments interface {
 	DEV_ENV() string
 	STAGING_ENV() string
 	PROD_ENV() string
+	PROFILING_ENV() string
 }

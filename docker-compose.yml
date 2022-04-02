@@ -61,7 +61,7 @@ services:
     ports:
       - 3333:3333
     environment: 
-      - GO_ENV=staging
+      - GO_ENV=production
       - LOGG_LEVEL=info
       - GIN_MODE=release
       - ELASTIC_APM_SERVICE_NAME=project
@@ -98,3 +98,20 @@ services:
       options:
         gelf-address: "udp://localhost:12201"
         tag: "project_apm"
+
+  metricbeat:
+    image:  docker.elastic.co/beats/metricbeat:7.6.2
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch:9200
+      - KIBANA_HOST=kibana:5601
+      - ELASTICSEARCH_USERNAME=""
+      - ELASTICSEARCH_PASSWORD=""
+    depends_on:
+      - apm
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
