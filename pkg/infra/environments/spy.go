@@ -28,6 +28,10 @@ func (pst EnvironmentsSpy) PROD_ENV() string {
 	return pst.Called().String(0)
 }
 
+func (pst EnvironmentsSpy) PROFILING_ENV() string {
+	return pst.Called().String(0)
+}
+
 func NewEnvironmentsSpy() *EnvironmentsSpy {
 	return new(EnvironmentsSpy)
 }

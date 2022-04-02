@@ -65,3 +65,15 @@ func Test_PROD_ENVSpy(t *testing.T) {
 		assert.Equal(t, "production", result)
 	})
 }
+
+func Test_PROFILING_ENVSpy(t *testing.T) {
+	t.Run("should execute correctly", func(t *testing.T) {
+		sut := NewEnvironmentsSpy()
+
+		sut.On("PROFILING_ENV").Return("enabled")
+
+		result := sut.PROFILING_ENV()
+
+		assert.Equal(t, "enabled", result)
+	})
+}

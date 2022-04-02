@@ -10,6 +10,7 @@ import (
 	"markets/pkg/app/errors"
 	"markets/pkg/app/interfaces"
 
+	"github.com/gin-contrib/expvar"
 	"github.com/gin-gonic/gin"
 	apm "go.elastic.co/apm/module/apmgin/v2"
 )
@@ -35,7 +36,7 @@ var httpServerWrapper = gin.New
 func (pst *HTTPServer) Default() {
 	pst.router = httpServerWrapper()
 	pst.router.Use(GinLogger(pst.logger))
-	pst.router.Use(apm.Middleware(pst.router)) //apm also carry about the recovery
+	pst.router.Use(apm.Middleware(pst.router)) //apm also carry about the recovery strategy
 	pst.router.SetTrustedProxies(nil)
 }
 
@@ -71,6 +72,10 @@ func (pst *HTTPServer) Setup() {
 }
 
 func (pst HTTPServer) Run() error {
+	if pst.env.PROFILING_ENV() == "enabled" {
+		pst.router.GET("/debug/vars", expvar.Handler())
+	}
+
 	if pst.env.GO_ENV() != pst.env.PROD_ENV() {
 		certPath := os.Getenv("TLS_CERT_PATH")
 		keyPath := os.Getenv("TLS_KEY_PATH")
