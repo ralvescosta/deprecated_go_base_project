@@ -70,7 +70,7 @@ func Test_PROFILING_ENVSpy(t *testing.T) {
 	t.Run("should execute correctly", func(t *testing.T) {
 		sut := NewEnvironmentsSpy()
 
-		sut.On("PROFILE_ENV").Return("enabled")
+		sut.On("PROFILING_ENV").Return("enabled")
 
 		result := sut.PROFILING_ENV()
 
