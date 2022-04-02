@@ -6,6 +6,32 @@ setup.kibana:
   host: "kibana:5601"
 
 metricbeat.modules:
-- module: elasticsearch
+- module: system
+  metricsets:
+    - cpu
+    - load
+    - memory
+    - network
+    - process
+    - process_summary
+    - socket_summary
+    - entropy
+    - core
+    - diskio
+    - socket
+  enabled: true
   period: 10s
-  hosts: ["http://elasticsearch:9200"]
+  process.include_top_n:
+    by_cpu: 5
+    by_memory: 5
+  processes: ['.*']
+
+- module: golang     
+  metricsets: ["heap", "expvar"]     
+  enabled: true     
+  period: 10s     
+  hosts: ["project:3333"]
+  heap.path: "/debug/vars"
+  expvar:    
+    namespace: "metricbeat"    
+    path: "/debug/vars"
