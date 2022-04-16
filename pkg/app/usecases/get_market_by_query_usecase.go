@@ -2,9 +2,10 @@ package usecases
 
 import (
 	"context"
-	"markets/pkg/app/interfaces"
-	"markets/pkg/domain/usecases"
-	valueObjects "markets/pkg/domain/value_objects"
+
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/domain/usecases"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 )
 
 type getMarketByQueryUseCase struct {

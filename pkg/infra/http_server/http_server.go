@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"markets/pkg/app/errors"
-	"markets/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/app/errors"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
 
 	"github.com/gin-contrib/expvar"
 	"github.com/gin-gonic/gin"

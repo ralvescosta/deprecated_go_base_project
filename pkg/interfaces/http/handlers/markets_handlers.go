@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"markets/pkg/app/interfaces"
-	"markets/pkg/domain/usecases"
-	httpServer "markets/pkg/infra/http_server"
-	"markets/pkg/interfaces/http/factories"
-	viewmodels "markets/pkg/interfaces/http/view_models"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/domain/usecases"
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
+	"github.com/ralvescosta/base/pkg/interfaces/http/factories"
+	viewmodels "github.com/ralvescosta/base/pkg/interfaces/http/view_models"
 )
 
 type IMarketHandlers interface {

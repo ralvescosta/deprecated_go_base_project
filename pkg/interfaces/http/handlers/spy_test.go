@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	httpServer "markets/pkg/infra/http_server"
 	"testing"
+
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
 )
 
 func Test_MarketHandlerSpy_Create(t *testing.T) {

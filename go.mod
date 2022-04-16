@@ -1,4 +1,4 @@
-module markets
+module github.com/ralvescosta/base
 
 go 1.17
 
@@ -26,6 +26,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jcchavezs/porto v0.1.0 // indirect
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -37,6 +38,8 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/santhosh-tekuri/jsonschema v1.2.4 // indirect
+	github.com/spf13/cobra v1.4.0 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	go.elastic.co/apm/module/apmhttp/v2 v2.0.0 // indirect

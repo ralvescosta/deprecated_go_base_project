@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	mErrors "markets/pkg/app/errors"
+	mErrors "github.com/ralvescosta/base/pkg/app/errors"
 )
 
 func Test_New(t *testing.T) {

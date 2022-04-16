@@ -10,8 +10,8 @@ import (
 	"net/url"
 	"testing"
 
-	httpServer "markets/pkg/infra/http_server"
-	"markets/pkg/infra/logger"
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
+	"github.com/ralvescosta/base/pkg/infra/logger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

@@ -3,8 +3,8 @@ package validator
 import (
 	"fmt"
 
-	"markets/pkg/app/interfaces"
-	valueObjects "markets/pkg/domain/value_objects"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 
 	"github.com/go-playground/validator/v10"
 )

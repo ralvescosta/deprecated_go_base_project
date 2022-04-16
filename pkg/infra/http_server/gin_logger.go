@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"markets/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap/zapcore"

@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"markets/pkg/app/interfaces"
-	httpServer "markets/pkg/infra/http_server"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
 
 	"github.com/gin-gonic/gin"
 )

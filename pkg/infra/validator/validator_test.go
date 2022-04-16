@@ -1,9 +1,10 @@
 package validator
 
 import (
-	"markets/pkg/app/interfaces"
-	valueObjects "markets/pkg/domain/value_objects"
 	"testing"
+
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 
 	"github.com/stretchr/testify/assert"
 )
