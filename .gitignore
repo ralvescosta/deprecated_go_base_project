@@ -1,6 +1,7 @@
 *debug
 *bin
 coverage
-db/FEIRAS_LIVRES
 logs/*.log
-Avaliação -  API.pdf
+*.pdf
+pkg/intarfaces/graphql/graph/generated/*
+pkg/intarfaces/graphql/graph/model/model_gen.go
