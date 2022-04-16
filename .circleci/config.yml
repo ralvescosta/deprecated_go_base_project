@@ -72,9 +72,10 @@ jobs:
           at: ~/repo
 
       - run:
-          name: Run install tools
+          name: Install goveralls
           command: |
-            go install github.com/mattn/goveralls
+            go install github.com/mattn/goveralls@latest
+            
       - run:
           name: Send to coveralls
           command: |
