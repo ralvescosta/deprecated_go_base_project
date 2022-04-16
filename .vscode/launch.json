@@ -16,7 +16,7 @@
         "ELASTIC_APM_SERVER_URL": "http://localhost:8200",
         "ELASTIC_APM_ENVIRONMENT": "staging",
       },
-      "args": ["run", "main.go"]
+      "args": ["api", ""]
     }
   ]
 }
