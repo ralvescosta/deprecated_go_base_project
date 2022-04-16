@@ -1,8 +1,9 @@
 package viewmodels
 
 import (
-	valueObjects "markets/pkg/domain/value_objects"
 	"testing"
+
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"markets/pkg/app/errors"
-	"markets/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/app/errors"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
 
 	"github.com/ralvescosta/dotenv"
 )

@@ -1,6 +1,6 @@
 package viewmodels
 
-import valueObjects "markets/pkg/domain/value_objects"
+import valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 
 type MarketViewModel struct {
 	Long       int    `json:"long" validate:"required"`

@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"markets/pkg/app/interfaces"
-	valueObjects "markets/pkg/domain/value_objects"
-	"markets/pkg/infra/database/models"
-	"markets/pkg/infra/logger"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
+	"github.com/ralvescosta/base/pkg/infra/database/models"
+	"github.com/ralvescosta/base/pkg/infra/logger"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"

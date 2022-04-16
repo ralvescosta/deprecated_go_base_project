@@ -3,7 +3,7 @@ package validator
 import (
 	"testing"
 
-	valueObjects "markets/pkg/domain/value_objects"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 
 	"github.com/stretchr/testify/assert"
 )

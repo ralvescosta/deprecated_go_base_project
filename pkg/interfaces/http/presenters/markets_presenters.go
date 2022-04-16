@@ -1,10 +1,10 @@
 package presenters
 
 import (
-	"markets/pkg/app/interfaces"
-	"markets/pkg/infra/adapters"
-	httpServer "markets/pkg/infra/http_server"
-	"markets/pkg/interfaces/http/handlers"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/infra/adapters"
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
+	"github.com/ralvescosta/base/pkg/interfaces/http/handlers"
 )
 
 type marketRoutes struct {

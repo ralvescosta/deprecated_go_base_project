@@ -3,9 +3,9 @@ package factories
 import (
 	"net/http"
 
-	"markets/pkg/app/errors"
-	httpserver "markets/pkg/infra/http_server"
-	vm "markets/pkg/interfaces/http/view_models"
+	"github.com/ralvescosta/base/pkg/app/errors"
+	httpserver "github.com/ralvescosta/base/pkg/infra/http_server"
+	vm "github.com/ralvescosta/base/pkg/interfaces/http/view_models"
 )
 
 type HttpResponseFactory struct{}
