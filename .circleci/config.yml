@@ -70,9 +70,10 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/repo
-          
+
       - coveralls/upload:
           token: COVERALLS_TOKEN
+          path_to_lcov: coverage.out
     
   build:
     working_directory: ~/repo
