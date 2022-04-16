@@ -3,5 +3,3 @@
 coverage
 logs/*.log
 *.pdf
-pkg/interfaces/graphql/graph/generated/*.go
-pkg/interfaces/graphql/graph/model/models_gen.go
