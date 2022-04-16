@@ -65,12 +65,12 @@ jobs:
   coveralls:
     working_directory: ~/repo
     docker:
-      - image: circleci/golang:1.17
+      - image: 'circleci/node:10.0.0'
     steps:
       - checkout
       - attach_workspace:
           at: ~/repo
-
+          
       - coveralls/upload:
           token: COVERALLS_TOKEN
     
