@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Run coverage
           command: |
-            go test ./... -covermode=count -coverprofile=coverage.out -json > report.json
+            go test ./... -race -covermode atomic -coverprofile=coverage.out -json > report.json
       - persist_to_workspace:
           root: ~/repo
           paths: 
@@ -65,15 +65,20 @@ jobs:
   coveralls:
     working_directory: ~/repo
     docker:
-      - image: 'circleci/node:10.0.0'
+      - image: circleci/golang:1.17
     steps:
       - checkout
       - attach_workspace:
           at: ~/repo
 
-      - coveralls/upload:
-          token: COVERALLS_TOKEN
-          path_to_lcov: coverage.out
+      - run:
+          name: Run install tools
+          command: |
+            go install github.com/mattn/goveralls
+      - run:
+          name: Send to coveralls
+          command: |
+            goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
     
   build:
     working_directory: ~/repo
@@ -105,7 +110,6 @@ jobs:
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.3
-  coveralls: coveralls/coveralls@1.0.6
 
 workflows:
   ci:
