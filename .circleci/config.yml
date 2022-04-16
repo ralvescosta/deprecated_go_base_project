@@ -61,7 +61,19 @@ jobs:
 
       - sonarcloud/scan:
           sonar_token_variable_name: SONAR_TOKEN
+    
+  coveralls:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/golang:1.17
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
 
+      - coveralls/upload:
+          token: COVERALLS_TOKEN
+    
   build:
     working_directory: ~/repo
     docker:
@@ -102,6 +114,11 @@ workflows:
           requires:
             - lint
             - test_and_coverage
+      - coveralls:
+          requires:
+            - lint
+            - test_and_coverage
       - build:
           requires:
             - sonar
+            - coveralls
