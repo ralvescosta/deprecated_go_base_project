@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Run coverage
           command: |
-            go test ./... -race -covermode=count -coverprofile=coverage.out -json > report.json
+            go test ./... -covermode=count -coverprofile=coverage.out -json > report.json
       - persist_to_workspace:
           root: ~/repo
           paths: 
