@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	"markets/pkg/app/errors"
-	"markets/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/app/errors"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
 
 	_ "github.com/lib/pq"
 )

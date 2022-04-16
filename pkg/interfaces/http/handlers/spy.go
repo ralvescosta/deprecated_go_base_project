@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/stretchr/testify/mock"
 
-	httpServer "markets/pkg/infra/http_server"
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
 )
 
 type MarketsHandlersSpy struct {

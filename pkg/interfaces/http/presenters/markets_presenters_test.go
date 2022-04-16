@@ -1,10 +1,11 @@
 package presenters
 
 import (
-	httpServer "markets/pkg/infra/http_server"
-	"markets/pkg/infra/logger"
-	"markets/pkg/interfaces/http/handlers"
 	"testing"
+
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
+	"github.com/ralvescosta/base/pkg/infra/logger"
+	"github.com/ralvescosta/base/pkg/interfaces/http/handlers"
 )
 
 func Test_Market_Register(t *testing.T) {

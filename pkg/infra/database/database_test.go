@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"markets/pkg/infra/logger"
+	"github.com/ralvescosta/base/pkg/infra/logger"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"

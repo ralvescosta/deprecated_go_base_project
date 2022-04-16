@@ -6,7 +6,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"markets/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
 )
 
 func NewLogger() (interfaces.ILogger, error) {

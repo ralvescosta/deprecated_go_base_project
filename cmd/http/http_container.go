@@ -1,16 +1,16 @@
-package cmd
+package http
 
 import (
-	"markets/pkg/app/interfaces"
-	"markets/pkg/app/usecases"
-	"markets/pkg/infra/database"
-	httpServer "markets/pkg/infra/http_server"
-	"markets/pkg/infra/logger"
-	"markets/pkg/infra/repositories"
-	"markets/pkg/infra/validator"
-	"markets/pkg/interfaces/http/factories"
-	"markets/pkg/interfaces/http/handlers"
-	"markets/pkg/interfaces/http/presenters"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	"github.com/ralvescosta/base/pkg/app/usecases"
+	"github.com/ralvescosta/base/pkg/infra/database"
+	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
+	"github.com/ralvescosta/base/pkg/infra/logger"
+	"github.com/ralvescosta/base/pkg/infra/repositories"
+	"github.com/ralvescosta/base/pkg/infra/validator"
+	"github.com/ralvescosta/base/pkg/interfaces/http/factories"
+	"github.com/ralvescosta/base/pkg/interfaces/http/handlers"
+	"github.com/ralvescosta/base/pkg/interfaces/http/presenters"
 )
 
 type HTTPServerContainer struct {

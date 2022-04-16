@@ -3,7 +3,7 @@ package interfaces
 import (
 	"context"
 
-	valueObjects "markets/pkg/domain/value_objects"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 )
 
 type IMarketRepository interface {

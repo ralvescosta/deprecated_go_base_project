@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"markets/pkg/infra/logger"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
+
+	"github.com/ralvescosta/base/pkg/infra/logger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

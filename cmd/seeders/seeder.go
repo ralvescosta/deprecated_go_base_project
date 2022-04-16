@@ -1,4 +1,4 @@
-package main
+package seeders
 
 import (
 	"context"
@@ -9,12 +9,12 @@ import (
 	"os"
 	"strconv"
 
-	"markets/pkg/app/interfaces"
-	valueObjects "markets/pkg/domain/value_objects"
-	"markets/pkg/infra/database"
-	"markets/pkg/infra/environments"
-	"markets/pkg/infra/logger"
-	"markets/pkg/infra/repositories"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
+	"github.com/ralvescosta/base/pkg/infra/database"
+	"github.com/ralvescosta/base/pkg/infra/environments"
+	"github.com/ralvescosta/base/pkg/infra/logger"
+	"github.com/ralvescosta/base/pkg/infra/repositories"
 )
 
 func readCsvFile(logger interfaces.ILogger, filePath string) []valueObjects.MarketValueObjects {
@@ -72,7 +72,7 @@ func readCsvFile(logger interfaces.ILogger, filePath string) []valueObjects.Mark
 	return records
 }
 
-func main() {
+func exec() {
 	if err := environments.NewEnvironment().Configure(); err != nil {
 		log.Fatal(err)
 	}
@@ -87,7 +87,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fileDir := currentDir + "/db/DEINFO_AB_FEIRASLIVRES_2014.csv"
+	fileDir := currentDir + "/cmd/seeders/DEINFO_AB_FEIRASLIVRES_2014.csv"
 
 	logger.Info("[Seeder] - Reading the CSV file...")
 	records := readCsvFile(logger, fileDir)

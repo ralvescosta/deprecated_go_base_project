@@ -7,10 +7,10 @@ import (
 	"reflect"
 	"time"
 
-	"markets/pkg/app/errors"
-	"markets/pkg/app/interfaces"
-	valueObjects "markets/pkg/domain/value_objects"
-	"markets/pkg/infra/database/models"
+	"github.com/ralvescosta/base/pkg/app/errors"
+	"github.com/ralvescosta/base/pkg/app/interfaces"
+	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
+	"github.com/ralvescosta/base/pkg/infra/database/models"
 
 	apm "go.elastic.co/apm/v2"
 )

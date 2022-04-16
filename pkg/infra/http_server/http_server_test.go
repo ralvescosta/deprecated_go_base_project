@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"markets/pkg/infra/environments"
-	"markets/pkg/infra/logger"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/ralvescosta/base/pkg/infra/environments"
+	"github.com/ralvescosta/base/pkg/infra/logger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
