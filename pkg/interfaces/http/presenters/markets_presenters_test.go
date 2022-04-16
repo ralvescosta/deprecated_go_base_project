@@ -5,6 +5,7 @@ import (
 
 	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
 	"github.com/ralvescosta/base/pkg/infra/logger"
+	i "github.com/ralvescosta/base/pkg/interfaces"
 	"github.com/ralvescosta/base/pkg/interfaces/http/handlers"
 )
 
@@ -31,7 +32,7 @@ type marketsPresentersSutRtn struct {
 	logger   *logger.LoggerSpy
 	handlers *handlers.MarketsHandlersSpy
 	server   *httpServer.HTTPServerSpy
-	routes   IRoutes
+	routes   i.IRoutes
 }
 
 func makeMarketsPresentersSut() marketsPresentersSutRtn {

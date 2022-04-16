@@ -1,6 +1,5 @@
 *debug
 *bin
 coverage
-db/FEIRAS_LIVRES
 logs/*.log
-Avaliação -  API.pdf
+*.pdf
