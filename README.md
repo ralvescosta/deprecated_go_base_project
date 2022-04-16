@@ -85,16 +85,6 @@ Abaixo segue um esquemático simplificado da estrutura da aplicação:
 |       ├── main.go
 ```
 
-Com intuito de criar uma API REST foi utilizado o pacote Gin Web Framework para facilitar a gestão dos recursos HTTP disponibilizados tão bem como facilitar a configuração de handlers e middlewares. A escolha do Gin passou pelo fato que atualmente este é um projeto mantido pela comunidade com um ótimo resultado de benchmark comparado com os demais como por exemplo o gurila-mux e echo.
-
-Optou-se por utilizar PostgreSQL como mecanismo de persistência.
-
-Optou-se por nao traduzir as colunas na base de dados e os contratos JSON para manter integridade das informações e evitar algum erro de tradução de algum termo técnico.
-
-Optou-se por utilizar a lib Zap para poder ser o gerenciador de logs da aplicação pois esta lib possui um ótimo resultado de benchmark comparado com outras libs como por exemplo o logrus.
-
-Implementou-se uma estratégia de Graceful Shutdown para quando ocorra a perda de conexão com o banco de dados a aplicação não “desligue” cortando todas as conexões TCP ativas. Desta forma perante a ausência do mongo a aplicação para de aceitar pedidos e espera todas as conexões TCP fecharem para poder encerrar a aplicação.
-
 ## Rotas
 
 ### POST /api/v1/markets
