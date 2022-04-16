@@ -1,7 +1,9 @@
 # GoLang Base Project
 
 [![CircleCI](https://circleci.com/gh/ralvescosta/go_base_project/tree/main.svg?style=svg)](https://circleci.com/gh/ralvescosta/go_base_project/tree/main)
+[![Coverage Status](https://coveralls.io/repos/github/ralvescosta/go_base_project/badge.svg?branch=feature/cov_report)](https://coveralls.io/github/ralvescosta/go_base_project?branch=feature/cov_report)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ralvescosta_unico_idtech_challenge&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ralvescosta_unico_idtech_challenge)
+
 ## Conteúdo
 - [GO Base Project](#go-base-project)
   - [Conteúdo](#conteudo)
