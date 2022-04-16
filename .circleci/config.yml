@@ -104,6 +104,7 @@ jobs:
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.3
+  coveralls: coveralls/coveralls@1.0.6
 
 workflows:
   ci:
