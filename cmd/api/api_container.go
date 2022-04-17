@@ -49,7 +49,7 @@ func NewHTTPContainer(env interfaces.IEnvironments) (HTTPServerContainer, error)
 	marketHandlers := handlers.NewMarketHandlers(logger, vAlidator, httpResFactory, createMarketUseCase, getByQueryUseCase, updateMarketUseCase, deleteMarketUseCase)
 	marketsRoutes := presenters.NewMarketRoutes(logger, marketHandlers)
 
-	graphqlResolvers := resolvers.NewResolver(getByQueryUseCase)
+	graphqlResolvers := resolvers.NewResolver(createMarketUseCase, getByQueryUseCase, updateMarketUseCase, deleteMarketUseCase)
 	graphqlRoutes := gqlPresenters.NewGraphQLRoutes(logger, graphqlResolvers)
 
 	return HTTPServerContainer{
