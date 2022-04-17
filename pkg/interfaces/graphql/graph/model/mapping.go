@@ -4,6 +4,27 @@ import (
 	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 )
 
+func CreateMarketToValueObject(c CreateMarket) valueObjects.MarketValueObjects {
+	return valueObjects.MarketValueObjects{
+		Long:       c.Long,
+		Lat:        c.Lat,
+		Setcens:    c.Setcens,
+		Areap:      c.Areap,
+		Coddist:    c.Coddist,
+		Distrito:   c.Distrito,
+		Codsubpref: c.Codsubpref,
+		Subpref:    c.Subpref,
+		Regiao5:    c.Regiao5,
+		Regiao8:    c.Regiao8,
+		NomeFeira:  c.NomeFeira,
+		Registro:   c.Registro,
+		Logradouro: c.Logradouro,
+		Numero:     c.Numero,
+		Bairro:     c.Bairro,
+		Referencia: c.Referencia,
+	}
+}
+
 func MarketFilterToValueObject(f MarketFilters) valueObjects.MarketValueObjects {
 	return valueObjects.MarketValueObjects{
 		Long:       safeInt(f.Long),
@@ -25,6 +46,27 @@ func MarketFilterToValueObject(f MarketFilters) valueObjects.MarketValueObjects 
 	}
 }
 
+func UpdateMarketToValueObject(c MarketToUpdate) valueObjects.MarketValueObjects {
+	return valueObjects.MarketValueObjects{
+		Long:       safeInt(c.Long),
+		Lat:        safeInt(c.Lat),
+		Setcens:    safeString(c.Setcens),
+		Areap:      safeString(c.Areap),
+		Coddist:    safeInt(c.Coddist),
+		Distrito:   safeString(c.Distrito),
+		Codsubpref: safeInt(c.Codsubpref),
+		Subpref:    safeString(c.Subpref),
+		Regiao5:    safeString(c.Regiao5),
+		Regiao8:    safeString(c.Regiao8),
+		NomeFeira:  safeString(c.NomeFeira),
+		Registro:   c.Registro,
+		Logradouro: safeString(c.Logradouro),
+		Numero:     safeString(c.Numero),
+		Bairro:     safeString(c.Bairro),
+		Referencia: safeString(c.Referencia),
+	}
+}
+
 func safeInt(i *int) int {
 	if i == nil {
 		return 0
@@ -39,6 +81,27 @@ func safeString(s *string) string {
 	}
 
 	return *s
+}
+
+func ValueObjectToMarket(vo valueObjects.MarketValueObjects) *Market {
+	return &Market{
+		Long:       vo.Long,
+		Lat:        vo.Lat,
+		Setcens:    vo.Setcens,
+		Areap:      vo.Areap,
+		Coddist:    vo.Coddist,
+		Distrito:   vo.Distrito,
+		Codsubpref: vo.Codsubpref,
+		Subpref:    vo.Subpref,
+		Regiao5:    vo.Regiao5,
+		Regiao8:    vo.Regiao8,
+		NomeFeira:  vo.NomeFeira,
+		Registro:   vo.Registro,
+		Logradouro: vo.Logradouro,
+		Numero:     vo.Numero,
+		Bairro:     vo.Bairro,
+		Referencia: vo.Referencia,
+	}
 }
 
 func ValueObjectSliceToMarketSlice(voSlice []valueObjects.MarketValueObjects) []*Market {

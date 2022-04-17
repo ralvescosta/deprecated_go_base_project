@@ -22,10 +22,10 @@ type graphqlRoutes struct {
 func (pst graphqlRoutes) Register(httpServer httpServer.IHTTPServer) {
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: pst.resolvers}))
 
-	httpServer.RegisterRoute(http.MethodPost, "/query", func(ctx *gin.Context) {
+	httpServer.RegisterRoute(http.MethodPost, "/api/gql/query", func(ctx *gin.Context) {
 		srv.ServeHTTP(ctx.Writer, ctx.Request)
 	})
-	httpServer.RegisterRoute(http.MethodGet, "/", func(ctx *gin.Context) {
+	httpServer.RegisterRoute(http.MethodGet, "/api/gql/playground", func(ctx *gin.Context) {
 		h := playground.Handler("GraphQL playground", "/query")
 		h.ServeHTTP(ctx.Writer, ctx.Request)
 	})
