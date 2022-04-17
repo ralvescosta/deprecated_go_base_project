@@ -11,14 +11,30 @@ import (
 )
 
 func (r *mutationResolver) CreateMarket(ctx context.Context, create model.CreateMarket) (*model.Market, error) {
-	return &model.Market{}, nil
+	result, _, err := r.createMarkerUseCase.Execute(ctx, model.CreateMarketToValueObject(create))
+	if err != nil {
+		return nil, err
+	}
+
+	return model.ValueObjectToMarket(result), nil
 }
 
 func (r *mutationResolver) UpdateMarket(ctx context.Context, update model.MarketToUpdate) (*model.Market, error) {
-	return &model.Market{}, nil
+	result, err := r.updateMarketUseCase.Execute(ctx, update.Registro, model.UpdateMarketToValueObject(update))
+	if err != nil {
+		return nil, err
+	}
+
+	return model.ValueObjectToMarket(result), nil
 }
 
 func (r *mutationResolver) DeleteMarket(ctx context.Context, registerCode string) (bool, error) {
+	err := r.deleteMarketUseCase.Execute(ctx, registerCode)
+
+	if err != nil {
+		return false, err
+	}
+
 	return true, nil
 }
 

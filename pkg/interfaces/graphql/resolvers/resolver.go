@@ -10,9 +10,22 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
+	createMarkerUseCase     usecases.ICreateMarketUseCase
 	getMarketByQueryUseCase usecases.IGetMarketByQueryUseCase
+	updateMarketUseCase     usecases.IUpdateMarketUseCase
+	deleteMarketUseCase     usecases.IDeleteMarketUseCase
 }
 
-func NewResolver(getMarketByQueryUseCase usecases.IGetMarketByQueryUseCase) generated.ResolverRoot {
-	return &Resolver{getMarketByQueryUseCase}
+func NewResolver(
+	createMarkerUseCase usecases.ICreateMarketUseCase,
+	getMarketByQueryUseCase usecases.IGetMarketByQueryUseCase,
+	updateMarketUseCase usecases.IUpdateMarketUseCase,
+	deleteMarketUseCase usecases.IDeleteMarketUseCase,
+) generated.ResolverRoot {
+	return &Resolver{
+		createMarkerUseCase,
+		getMarketByQueryUseCase,
+		updateMarketUseCase,
+		deleteMarketUseCase,
+	}
 }
