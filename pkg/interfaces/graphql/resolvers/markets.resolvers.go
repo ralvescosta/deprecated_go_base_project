@@ -5,18 +5,30 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/generated"
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/model"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) CreateMarket(ctx context.Context, create model.CreateMarket) (*model.Market, error) {
+	return &model.Market{}, nil
 }
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) UpdateMarket(ctx context.Context, update model.MarketToUpdate) (*model.Market, error) {
+	return &model.Market{}, nil
+}
+
+func (r *mutationResolver) DeleteMarket(ctx context.Context, registerCode string) (bool, error) {
+	return true, nil
+}
+
+func (r *queryResolver) GetMarkets(ctx context.Context, query model.MarketFilters) ([]*model.Market, error) {
+	result, err := r.getMarketByQueryUseCase.Execute(ctx, model.MarketFilterToValueObject(query))
+	if err != nil {
+		return nil, err
+	}
+
+	return model.ValueObjectSliceToMarketSlice(result), nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

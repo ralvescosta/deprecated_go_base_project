@@ -2,19 +2,78 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type CreateMarket struct {
+	Long       int    `json:"long"`
+	Lat        int    `json:"lat"`
+	Setcens    string `json:"setcens"`
+	Areap      string `json:"areap"`
+	Coddist    int    `json:"coddist"`
+	Distrito   string `json:"distrito"`
+	Codsubpref int    `json:"codsubpref"`
+	Subpref    string `json:"subpref"`
+	Regiao5    string `json:"regiao5"`
+	Regiao8    string `json:"regiao8"`
+	NomeFeira  string `json:"nomeFeira"`
+	Registro   string `json:"registro"`
+	Logradouro string `json:"logradouro"`
+	Numero     string `json:"numero"`
+	Bairro     string `json:"bairro"`
+	Referencia string `json:"referencia"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type Market struct {
+	Long       int    `json:"long"`
+	Lat        int    `json:"lat"`
+	Setcens    string `json:"setcens"`
+	Areap      string `json:"areap"`
+	Coddist    int    `json:"coddist"`
+	Distrito   string `json:"distrito"`
+	Codsubpref int    `json:"codsubpref"`
+	Subpref    string `json:"subpref"`
+	Regiao5    string `json:"regiao5"`
+	Regiao8    string `json:"regiao8"`
+	NomeFeira  string `json:"nomeFeira"`
+	Registro   string `json:"registro"`
+	Logradouro string `json:"logradouro"`
+	Numero     string `json:"numero"`
+	Bairro     string `json:"bairro"`
+	Referencia string `json:"referencia"`
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type MarketFilters struct {
+	Long       *int    `json:"long"`
+	Lat        *int    `json:"lat"`
+	Setcens    *string `json:"setcens"`
+	Areap      *string `json:"areap"`
+	Coddist    *int    `json:"coddist"`
+	Distrito   *string `json:"distrito"`
+	Codsubpref *int    `json:"codsubpref"`
+	Subpref    *string `json:"subpref"`
+	Regiao5    *string `json:"regiao5"`
+	Regiao8    *string `json:"regiao8"`
+	NomeFeira  *string `json:"nomeFeira"`
+	Registro   *string `json:"registro"`
+	Logradouro *string `json:"logradouro"`
+	Numero     *string `json:"numero"`
+	Bairro     *string `json:"bairro"`
+	Referencia *string `json:"referencia"`
+}
+
+type MarketToUpdate struct {
+	Long       *int    `json:"long"`
+	Lat        *int    `json:"lat"`
+	Setcens    *string `json:"setcens"`
+	Areap      *string `json:"areap"`
+	Coddist    *int    `json:"coddist"`
+	Distrito   *string `json:"distrito"`
+	Codsubpref *int    `json:"codsubpref"`
+	Subpref    *string `json:"subpref"`
+	Regiao5    *string `json:"regiao5"`
+	Regiao8    *string `json:"regiao8"`
+	NomeFeira  *string `json:"nomeFeira"`
+	Registro   string  `json:"registro"`
+	Logradouro *string `json:"logradouro"`
+	Numero     *string `json:"numero"`
+	Bairro     *string `json:"bairro"`
+	Referencia *string `json:"referencia"`
 }

@@ -12,15 +12,15 @@ import (
 	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
 	i "github.com/ralvescosta/base/pkg/interfaces"
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/generated"
-	"github.com/ralvescosta/base/pkg/interfaces/graphql/resolvers"
 )
 
 type graphqlRoutes struct {
-	logger interfaces.ILogger
+	logger    interfaces.ILogger
+	resolvers generated.ResolverRoot
 }
 
 func (pst graphqlRoutes) Register(httpServer httpServer.IHTTPServer) {
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &resolvers.Resolver{}}))
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: pst.resolvers}))
 
 	httpServer.RegisterRoute(http.MethodPost, "/query", func(ctx *gin.Context) {
 		srv.ServeHTTP(ctx.Writer, ctx.Request)
@@ -31,6 +31,6 @@ func (pst graphqlRoutes) Register(httpServer httpServer.IHTTPServer) {
 	})
 }
 
-func NewGraphQLRoutes(logger interfaces.ILogger) i.IRoutes {
-	return graphqlRoutes{logger}
+func NewGraphQLRoutes(logger interfaces.ILogger, resolvers generated.ResolverRoot) i.IRoutes {
+	return graphqlRoutes{logger, resolvers}
 }
