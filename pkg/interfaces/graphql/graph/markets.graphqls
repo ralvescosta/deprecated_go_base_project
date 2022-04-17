@@ -1,0 +1,86 @@
+type Market {
+  long: Int!
+  lat: Int!
+  setcens: String!
+  areap: String!
+  coddist: Int!
+  distrito: String!
+  codsubpref: Int!
+  subpref: String!
+  regiao5: String!
+  regiao8: String!
+  nomeFeira: String!
+  registro: String!
+  logradouro: String!
+  numero: String!
+  bairro: String!
+  referencia: String!
+}
+
+input CreateMarket {
+  long: Int!
+  lat: Int!
+  setcens: String!
+  areap: String!
+  coddist: Int!
+  distrito: String!
+  codsubpref: Int!
+  subpref: String!
+  regiao5: String!
+  regiao8: String!
+  nomeFeira: String!
+  registro: String!
+  logradouro: String!
+  numero: String!
+  bairro: String!
+  referencia: String!
+}
+
+
+input MarketToUpdate {
+  long: Int
+  lat: Int
+  setcens: String
+  areap: String
+  coddist: Int
+  distrito: String
+  codsubpref: Int
+  subpref: String
+  regiao5: String
+  regiao8: String
+  nomeFeira: String
+  registro: String!
+  logradouro: String
+  numero: String
+  bairro: String
+  referencia: String
+}
+
+input MarketFilters {
+  long: Int
+  lat: Int
+  setcens: String
+  areap: String
+  coddist: Int
+  distrito: String
+  codsubpref: Int
+  subpref: String
+  regiao5: String
+  regiao8: String
+  nomeFeira: String
+  registro: String
+  logradouro: String
+  numero: String
+  bairro: String
+  referencia: String
+}
+
+type Query {
+  getMarkets(query: MarketFilters!): [Market]!
+}
+
+type Mutation {
+  createMarket(create: CreateMarket!): Market!
+  updateMarket(update: MarketToUpdate!): Market!
+  deleteMarket(registerCode: String!): Boolean!
+}

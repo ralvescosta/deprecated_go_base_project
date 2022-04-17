@@ -10,6 +10,7 @@ import (
 	"github.com/ralvescosta/base/pkg/infra/validator"
 	i "github.com/ralvescosta/base/pkg/interfaces"
 	gqlPresenters "github.com/ralvescosta/base/pkg/interfaces/graphql/presenters"
+	"github.com/ralvescosta/base/pkg/interfaces/graphql/resolvers"
 	"github.com/ralvescosta/base/pkg/interfaces/http/factories"
 	"github.com/ralvescosta/base/pkg/interfaces/http/handlers"
 	"github.com/ralvescosta/base/pkg/interfaces/http/presenters"
@@ -48,7 +49,8 @@ func NewHTTPContainer(env interfaces.IEnvironments) (HTTPServerContainer, error)
 	marketHandlers := handlers.NewMarketHandlers(logger, vAlidator, httpResFactory, createMarketUseCase, getByQueryUseCase, updateMarketUseCase, deleteMarketUseCase)
 	marketsRoutes := presenters.NewMarketRoutes(logger, marketHandlers)
 
-	graphqlRoutes := gqlPresenters.NewGraphQLRoutes(logger)
+	graphqlResolvers := resolvers.NewResolver(getByQueryUseCase)
+	graphqlRoutes := gqlPresenters.NewGraphQLRoutes(logger, graphqlResolvers)
 
 	return HTTPServerContainer{
 		logger,
