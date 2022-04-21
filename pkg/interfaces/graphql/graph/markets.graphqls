@@ -84,3 +84,7 @@ type Mutation {
   updateMarket(update: MarketToUpdate!): Market!
   deleteMarket(registerCode: String!): Boolean!
 }
+
+type Subscription {
+  marketCreated: Market!
+}
