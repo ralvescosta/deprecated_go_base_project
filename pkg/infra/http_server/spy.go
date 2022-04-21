@@ -7,15 +7,16 @@ import (
 
 type HTTPServerSpy struct {
 	mock.Mock
+	Handlers []gin.HandlerFunc
 }
 
 func (pst HTTPServerSpy) Default() {
 
 }
 
-func (pst HTTPServerSpy) RegisterRoute(method string, path string, handlers ...gin.HandlerFunc) error {
+func (pst *HTTPServerSpy) RegisterRoute(method string, path string, handlers ...gin.HandlerFunc) error {
 	args := pst.Called(method, path)
-
+	pst.Handlers = append(pst.Handlers, handlers...)
 	return args.Error(0)
 }
 

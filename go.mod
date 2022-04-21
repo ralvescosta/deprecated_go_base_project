@@ -8,6 +8,7 @@ require (
 	github.com/gin-contrib/expvar v0.0.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-playground/validator/v10 v10.10.1
+	github.com/gorilla/websocket v1.5.0
 	github.com/lib/pq v1.10.4
 	github.com/ralvescosta/dotenv v1.0.4
 	github.com/spf13/cobra v1.4.0
@@ -32,7 +33,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
-	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jcchavezs/porto v0.1.0 // indirect

@@ -1,27 +1,31 @@
 package api
 
 import (
+	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/ralvescosta/base/pkg/app/interfaces"
 	"github.com/ralvescosta/base/pkg/app/usecases"
 	"github.com/ralvescosta/base/pkg/infra/database"
+	graphqlserver "github.com/ralvescosta/base/pkg/infra/graphql_server"
 	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
 	"github.com/ralvescosta/base/pkg/infra/logger"
 	"github.com/ralvescosta/base/pkg/infra/repositories"
 	"github.com/ralvescosta/base/pkg/infra/validator"
-	i "github.com/ralvescosta/base/pkg/interfaces"
+	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/generated"
 	gqlPresenters "github.com/ralvescosta/base/pkg/interfaces/graphql/presenters"
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/resolvers"
 	"github.com/ralvescosta/base/pkg/interfaces/http/factories"
 	"github.com/ralvescosta/base/pkg/interfaces/http/handlers"
 	"github.com/ralvescosta/base/pkg/interfaces/http/presenters"
+	i "github.com/ralvescosta/base/pkg/interfaces/http/presenters"
 )
 
 type HTTPServerContainer struct {
-	logger     interfaces.ILogger
-	httpServer httpServer.IHTTPServer
+	logger        interfaces.ILogger
+	httpServer    httpServer.IHTTPServer
+	graphqlServer graphqlserver.IGraphqlServer
 
 	marketsRoutes i.IRoutes
-	graphqlRoutes i.IRoutes
+	graphqlRoutes gqlPresenters.GraphqlRoutes
 }
 
 func NewHTTPContainer(env interfaces.IEnvironments) (HTTPServerContainer, error) {
@@ -38,6 +42,7 @@ func NewHTTPContainer(env interfaces.IEnvironments) (HTTPServerContainer, error)
 	}
 
 	httpServer := httpServer.NewHTTPServer(env, logger, shotdown)
+
 	vAlidator := validator.NewValidator()
 	httpResFactory := factories.NewHttpResponseFactory()
 	marketRepository := repositories.NewMarketRepository(logger, db)
@@ -50,11 +55,16 @@ func NewHTTPContainer(env interfaces.IEnvironments) (HTTPServerContainer, error)
 	marketsRoutes := presenters.NewMarketRoutes(logger, marketHandlers)
 
 	graphqlResolvers := resolvers.NewResolver(createMarketUseCase, getByQueryUseCase, updateMarketUseCase, deleteMarketUseCase)
-	graphqlRoutes := gqlPresenters.NewGraphQLRoutes(logger, graphqlResolvers)
+
+	svr := handler.New(generated.NewExecutableSchema(generated.Config{Resolvers: graphqlResolvers}))
+	graphqlServer := graphqlserver.NewGraphQLServer(svr)
+
+	graphqlRoutes := gqlPresenters.NewGraphQLRoutes(logger)
 
 	return HTTPServerContainer{
 		logger,
 		httpServer,
+		graphqlServer,
 
 		marketsRoutes,
 		graphqlRoutes,

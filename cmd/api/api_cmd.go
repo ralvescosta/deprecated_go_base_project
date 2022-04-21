@@ -24,8 +24,9 @@ func NewHTTPServerCmd() *cobra.Command {
 			}
 
 			container.httpServer.Default()
+			container.graphqlServer.Default()
 			container.marketsRoutes.Register(container.httpServer)
-			container.graphqlRoutes.Register(container.httpServer)
+			container.graphqlRoutes.Register(container.httpServer, container.graphqlServer)
 			container.httpServer.Setup()
 
 			if err := container.httpServer.Run(); err != nil {
