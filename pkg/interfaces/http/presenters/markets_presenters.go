@@ -4,7 +4,6 @@ import (
 	"github.com/ralvescosta/base/pkg/app/interfaces"
 	"github.com/ralvescosta/base/pkg/infra/adapters"
 	httpServer "github.com/ralvescosta/base/pkg/infra/http_server"
-	i "github.com/ralvescosta/base/pkg/interfaces"
 	"github.com/ralvescosta/base/pkg/interfaces/http/handlers"
 )
 
@@ -20,7 +19,7 @@ func (pst marketRoutes) Register(httpServer httpServer.IHTTPServer) {
 	httpServer.RegisterRoute("DELETE", "/api/v1/markets/:registerCode", adapters.HandlerAdapt(pst.handlers.Delete, pst.logger))
 }
 
-func NewMarketRoutes(logger interfaces.ILogger, handlers handlers.IMarketHandlers) i.IRoutes {
+func NewMarketRoutes(logger interfaces.ILogger, handlers handlers.IMarketHandlers) IRoutes {
 	return marketRoutes{
 		logger,
 		handlers,

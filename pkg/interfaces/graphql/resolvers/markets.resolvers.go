@@ -5,6 +5,8 @@ package resolvers
 
 import (
 	"context"
+	"log"
+	"time"
 
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/generated"
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/model"
@@ -47,11 +49,31 @@ func (r *queryResolver) GetMarkets(ctx context.Context, query model.MarketFilter
 	return model.ValueObjectSliceToMarketSlice(result), nil
 }
 
+func (r *subscriptionResolver) MarketCreated(ctx context.Context) (<-chan *model.Market, error) {
+	var ch = make(chan *model.Market)
+
+	go func() {
+		for {
+			time.Sleep(2 * time.Second)
+			log.Println("Send to subscription")
+			ch <- &model.Market{
+				Registro: "Oie!",
+			}
+		}
+	}()
+
+	return ch, nil
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
+// Subscription returns generated.SubscriptionResolver implementation.
+func (r *Resolver) Subscription() generated.SubscriptionResolver { return &subscriptionResolver{r} }
+
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type subscriptionResolver struct{ *Resolver }
