@@ -19,11 +19,11 @@ type IGraphqlServer interface {
 }
 
 type graphqlServer struct {
-	Srv *handler.Server
+	srv *handler.Server
 }
 
 func (pst graphqlServer) Default() {
-	pst.Srv.AddTransport(&transport.Websocket{
+	pst.srv.AddTransport(&transport.Websocket{
 		Upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
 				return true
@@ -39,21 +39,21 @@ func (pst graphqlServer) Default() {
 		},
 	})
 
-	pst.Srv.AddTransport(transport.Options{})
-	pst.Srv.AddTransport(transport.GET{})
-	pst.Srv.AddTransport(transport.POST{})
-	pst.Srv.AddTransport(transport.MultipartForm{})
+	pst.srv.AddTransport(transport.Options{})
+	pst.srv.AddTransport(transport.GET{})
+	pst.srv.AddTransport(transport.POST{})
+	pst.srv.AddTransport(transport.MultipartForm{})
 
-	pst.Srv.SetQueryCache(lru.New(100))
+	pst.srv.SetQueryCache(lru.New(100))
 
-	pst.Srv.Use(extension.Introspection{})
-	pst.Srv.Use(extension.AutomaticPersistedQuery{
+	pst.srv.Use(extension.Introspection{})
+	pst.srv.Use(extension.AutomaticPersistedQuery{
 		Cache: lru.New(100),
 	})
 }
 
 func (pst graphqlServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	pst.Srv.ServeHTTP(w, r)
+	pst.srv.ServeHTTP(w, r)
 }
 
 func NewGraphQLServer(srv *handler.Server) IGraphqlServer {

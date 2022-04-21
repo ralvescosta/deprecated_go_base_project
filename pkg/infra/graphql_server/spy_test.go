@@ -34,3 +34,8 @@ func (pst *GraphqlServerSpySuit) TestServeHTTP() {
 
 	pst.sut.ServeHTTP(res, req)
 }
+
+func (pst *GraphqlServerSpySuit) TestNewGraphqlServerSpy() {
+	spy := NewGraphqlServerSpy()
+	pst.IsType(&GraphqlServerSpy{}, spy)
+}
