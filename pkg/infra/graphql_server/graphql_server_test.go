@@ -1,6 +1,7 @@
 package graphqlserver
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -59,4 +60,8 @@ func (pst *GraphqlServerSuit) TestServeHTTP() {
 	pst.sut.ServeHTTP(res, req)
 
 	pst.gqlHandlerServerSpy.AssertExpectations(pst.T())
+}
+
+func (pst *GraphqlServerSuit) TestInitFunc() {
+	pst.sut.initFunc(context.Background(), transport.InitPayload{})
 }
