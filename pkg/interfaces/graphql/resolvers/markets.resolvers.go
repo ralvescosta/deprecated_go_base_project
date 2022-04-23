@@ -5,8 +5,6 @@ package resolvers
 
 import (
 	"context"
-	"log"
-	"time"
 
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/generated"
 	"github.com/ralvescosta/base/pkg/interfaces/graphql/graph/model"
@@ -18,7 +16,10 @@ func (r *mutationResolver) CreateMarket(ctx context.Context, create model.Create
 		return nil, err
 	}
 
-	return model.ValueObjectToMarket(result), nil
+	model := model.ValueObjectToMarket(result)
+	r.marketCreatedNotifier <- model
+
+	return model, nil
 }
 
 func (r *mutationResolver) UpdateMarket(ctx context.Context, update model.MarketToUpdate) (*model.Market, error) {
@@ -50,19 +51,7 @@ func (r *queryResolver) GetMarkets(ctx context.Context, query model.MarketFilter
 }
 
 func (r *subscriptionResolver) MarketCreated(ctx context.Context) (<-chan *model.Market, error) {
-	var ch = make(chan *model.Market)
-
-	go func() {
-		for {
-			time.Sleep(2 * time.Second)
-			log.Println("Send to subscription")
-			ch <- &model.Market{
-				Registro: "Oie!",
-			}
-		}
-	}()
-
-	return ch, nil
+	return r.marketCreatedNotifier, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
