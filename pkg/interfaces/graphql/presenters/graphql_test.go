@@ -31,9 +31,9 @@ func (pst *GraphQLPresenterSuit) SetupTest() {
 
 func (pst *GraphQLPresenterSuit) TestRegsiterExecuteCorrectly() {
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())
-	pst.httpServer.On("RegisterRoute", "POST", "/api/gql/query").Return(nil).Once()
-	pst.httpServer.On("RegisterRoute", "GET", "/api/gql/subscriptions").Return(nil).Once()
-	pst.httpServer.On("RegisterRoute", "GET", "/api/gql/playground").Return(nil).Once()
+	pst.httpServer.On("RegisterRoute", "POST", "/api/v1/gql/query").Return(nil).Once()
+	pst.httpServer.On("RegisterRoute", "GET", "/api/v1/gql/subscriptions").Return(nil).Once()
+	pst.httpServer.On("RegisterRoute", "GET", "/api/v1/gql/playground").Return(nil).Once()
 	pst.graphqlServer.On("ServeHTTP", c.Writer, c.Request)
 
 	pst.sut.Register(pst.httpServer, pst.graphqlServer)
