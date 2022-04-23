@@ -17,13 +17,13 @@ type GraphqlRoutes struct {
 }
 
 func (pst GraphqlRoutes) Register(httpServer httpServer.IHTTPServer, graphqlServer graphqlserver.IGraphqlServer) {
-	httpServer.RegisterRoute(http.MethodPost, "/api/gql/query", func(ctx *gin.Context) {
+	httpServer.RegisterRoute(http.MethodPost, "/api/v1/gql/query", func(ctx *gin.Context) {
 		graphqlServer.ServeHTTP(ctx.Writer, ctx.Request)
 	})
-	httpServer.RegisterRoute(http.MethodGet, "/api/gql/subscriptions", func(ctx *gin.Context) {
+	httpServer.RegisterRoute(http.MethodGet, "/api/v1/gql/subscriptions", func(ctx *gin.Context) {
 		graphqlServer.ServeHTTP(ctx.Writer, ctx.Request)
 	})
-	httpServer.RegisterRoute(http.MethodGet, "/api/gql/playground", func(ctx *gin.Context) {
+	httpServer.RegisterRoute(http.MethodGet, "/api/v1/gql/playground", func(ctx *gin.Context) {
 		h := playground.Handler("GraphQL playground", "/api/gql/query")
 		h.ServeHTTP(ctx.Writer, ctx.Request)
 	})

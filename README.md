@@ -8,7 +8,7 @@
 - [GO Base Project](#go-base-project)
   - [Conteúdo](#conteudo)
   - [Estrutura do Projeto](#estrutura-do-projeto)
-  - [Recursos/Rotas](#rotas)
+  - [Recursos](#recursos)
   - [Instalacao](#instalacao)
 
 ## Estrutura do projeto
@@ -85,9 +85,10 @@ Abaixo segue um esquemático simplificado da estrutura da aplicação:
 │       │           └── *_viewmodels_test.go
 │       │
 |       ├── main.go
+└───────└──────
 ```
 
-## Rotas
+## Recursos
 
 ### POST /api/v1/markets
 
@@ -183,7 +184,78 @@ curl --location --request DELETE 'https://localhost:3333/api/v1/markets/4041-0'
 - 404 - Caso o registro solicitado a atualização nao exista na base de dados
 - 500 - Erro interno
 
-## Instalacao
+
+### GraphQL Query
+
+ >REQUEST:
+ ```bash
+  curl --request POST 'https://localhost:3333/api/v1/gql/query \
+  --data-raw '{
+    query {
+      getMarkets({
+        registro: 'registro'
+      }) {
+        registro
+      }
+    }
+  }'
+ ```
+
+ >RESPONSE:
+  - 200 - Resultado da consulta
+  - 400 - Caso algum campo nao valido informado na query
+  - 500 - Error interno
+
+### GraphQL Mutations
+
+ >REQUEST:
+ ```bash
+  curl --request POST 'https://localhost:3333/api/v1/gql/query \
+  --data-raw '{
+    mutation {
+      createMarket({
+        "long": -46550162,
+        "lat": -23558733,
+        "setcens": "355030885000091",
+        "areap": "3550308005040",
+        "coddist": 87,
+        "distrito": "VILA FORMOSA",
+        "codsubpref": 26,
+        "subpref": "ARICANDUVA-FORMOSA-CARRAO",
+        "regiao5": "Leste",
+        "regiao8": "Leste 1",
+        "nome_feira": "VILA FORMOSA",
+        "registro": "4041-0",
+        "logradouro": "UA MARAGOJIPE",
+        "numero": "S/N",
+        "bairro": "VL FORMOSA",
+        "referencia": "TV RUA PRETORIA"
+      }) {
+        registro
+      }
+    }
+  }'
+ ```
+>RESPONSE:
+- 201 - Feira criado com sucesso
+- 200 - Caso exista uma feira cadastrada com o mesmo 'Registro', retorna a feira ja cadastrada.
+- 400 - Erro de contrato - Todos os campos sao obrigatórios para cadastro da feira
+- 500 - Error interno
+
+### GraphQL Subscriptions
+
+ >REQUEST:
+ ```bash
+  curl --request POST 'https://localhost:3333/api/v1/gql/query \
+  --data-raw '{
+    subscription {
+      marketCreated {
+        registro
+      }
+    }
+  }'
+ ```
+## Instalação
 
 ### Para executar o projeto com todas as dependências
 
@@ -194,7 +266,7 @@ make docker-compose
 Apos execute o script de carga da base de dados
 
 ```bash
-make seeder
+make seeders
 ```
 
 **OBS: Na pasta integration contem um par de collection e environment do postman com os endpoints criados para a aplicação.**
@@ -216,12 +288,7 @@ docker-compose -f docker-compose.env.yml up -d
 - Executando o seeder
 
 ```bash
-make seeder
-```
-ou
-
-```bash
-GO_ENV=development go run ./db/seeder.go
+make seeders
 ```
 
 - Executando a aplicação
