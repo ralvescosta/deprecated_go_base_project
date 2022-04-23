@@ -8,7 +8,7 @@
 - [GO Base Project](#go-base-project)
   - [Conteúdo](#conteudo)
   - [Estrutura do Projeto](#estrutura-do-projeto)
-  - [Recursos/Rotas](#rotas)
+  - [Recursos](#recursos)
   - [Instalacao](#instalacao)
 
 ## Estrutura do projeto
@@ -85,9 +85,10 @@ Abaixo segue um esquemático simplificado da estrutura da aplicação:
 │       │           └── *_viewmodels_test.go
 │       │
 |       ├── main.go
+└───────└──────
 ```
 
-## Rotas
+## Recursos
 
 ### POST /api/v1/markets
 
@@ -183,7 +184,32 @@ curl --location --request DELETE 'https://localhost:3333/api/v1/markets/4041-0'
 - 404 - Caso o registro solicitado a atualização nao exista na base de dados
 - 500 - Erro interno
 
-## Instalacao
+
+### GraphQL Query
+
+ >REQUEST:
+ ```bash
+  curl --request POST 'https://localhost:3333/api/v1/gql/query \
+  --data-raw '{
+    query {
+      getMarkets({
+        registro: 'registro'
+      }) {
+        registro
+      }
+    }
+  }'
+ ```
+
+ >RESPONSE:
+  - 200 - Resultado da consulta
+  - 400 - Caso algum campo nao valido informado na query
+  - 500 - Error interno
+
+### GraphQL Mutations
+
+### GraphQL Subscriptions
+## Instalação
 
 ### Para executar o projeto com todas as dependências
 
@@ -194,7 +220,7 @@ make docker-compose
 Apos execute o script de carga da base de dados
 
 ```bash
-make seeder
+make seeders
 ```
 
 **OBS: Na pasta integration contem um par de collection e environment do postman com os endpoints criados para a aplicação.**
@@ -216,12 +242,7 @@ docker-compose -f docker-compose.env.yml up -d
 - Executando o seeder
 
 ```bash
-make seeder
-```
-ou
-
-```bash
-GO_ENV=development go run ./db/seeder.go
+make seeders
 ```
 
 - Executando a aplicação

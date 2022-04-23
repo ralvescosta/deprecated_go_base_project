@@ -1,6 +1,3 @@
-seeder:
-	GO_ENV=development go run ./db/seeder.go
-
 run:
 	GO_ENV=development \
 	GIN_MODE=debug \
