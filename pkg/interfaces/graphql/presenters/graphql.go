@@ -24,7 +24,7 @@ func (pst GraphqlRoutes) Register(httpServer httpServer.IHTTPServer, graphqlServ
 		graphqlServer.ServeHTTP(ctx.Writer, ctx.Request)
 	})
 	httpServer.RegisterRoute(http.MethodGet, "/api/v1/gql/playground", func(ctx *gin.Context) {
-		h := playground.Handler("GraphQL playground", "/api/gql/query")
+		h := playground.Handler("GraphQL playground", "/api/v1/gql/query")
 		h.ServeHTTP(ctx.Writer, ctx.Request)
 	})
 }
