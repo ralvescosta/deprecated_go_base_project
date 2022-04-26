@@ -32,6 +32,7 @@ func (pst *GraphqlServerSuit) TestNewGraphQLServer() {
 	s := NewGraphQLServer(pst.gqlHandlerServerSpy)
 
 	pst.IsType(graphqlServer{}, s)
+	pst.True(ws.Upgrader.CheckOrigin(httptest.NewRequest(http.MethodGet, "/", nil)))
 }
 
 func (pst *GraphqlServerSuit) TestDefaultExecCorrectly() {
