@@ -3,22 +3,24 @@ package errors
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-func Test_NewInternalError(t *testing.T) {
-	t.Run("should create a internalError correctly", func(t *testing.T) {
-		err := NewInternalError("some error")
-
-		assert.Error(t, err)
-		assert.IsType(t, InternalError{}, err)
-	})
+type InternalErrorTestSuite struct {
+	suite.Suite
 }
 
-func Test_NewInternalError_Error(t *testing.T) {
-	t.Run("should return error msg", func(t *testing.T) {
-		err := NewInternalError("some error")
+func TestInternalErrorTestSuite(t *testing.T) {
+	suite.Run(t, new(InternalErrorTestSuite))
+}
 
-		assert.Equal(t, "some error", err.Error())
-	})
+func (s *InternalErrorTestSuite) TestNewInternalError() {
+	err := NewInternalError("some error")
+	s.Error(err)
+	s.IsType(InternalError{}, err)
+}
+
+func (s *InternalErrorTestSuite) TestNewInternalErrorError() {
+	err := NewInternalError("some error")
+	s.Equal("some error", err.Error())
 }
