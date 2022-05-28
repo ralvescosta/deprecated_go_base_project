@@ -1,7 +1,6 @@
 package errors
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -15,15 +14,15 @@ func TestNotFoundErrorTestSuite(t *testing.T) {
 	suite.Run(t, new(NotFoundErrorTestSuite))
 }
 
-func (s *NotFoundErrorTestSuite) TestNotFoundErrorConflictHere() {
-	err := NewNotFoundError("other conflict here")
+func (s *NotFoundErrorTestSuite) TestCONFLICTNotFoundError() {
+	err := NewNotFoundError("some error CONFLICT")
 
 	s.Error(err)
 	s.IsType(NotFoundError{}, err)
 }
 
-func (s *NotFoundErrorTestSuite) TestNotFoundErrorError() {
-	fmt.Println("WARNING")
+func (s *NotFoundErrorTestSuite) TestNotCONFLICTFoundErrorError() {
+	//CONFLICT
 	err := NewNotFoundError("some error")
 	s.Equal("some error", err.Error())
 }
