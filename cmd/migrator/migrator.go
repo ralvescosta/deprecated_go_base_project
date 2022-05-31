@@ -1,7 +1,8 @@
-package seeders
+package main
 
 import (
 	"context"
+	"database/sql"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -114,4 +115,90 @@ func exec() {
 		marketRepository.Create(context.Background(), r)
 	}
 	logger.Info("[Seeder] finished successfully")
+}
+
+func ListTables(ctx context.Context, logger interfaces.ILogger, db *sql.DB) ([]string, error) {
+	rawTables, err := db.QueryContext(ctx, "SHOW tables")
+	if err != nil {
+		return []string{}, err
+	}
+	defer rawTables.Close()
+
+	var tables []string
+	for rawTables.Next() {
+		var table string
+		err = rawTables.Scan(&table)
+		if err != nil {
+			return []string{}, err
+		}
+
+		tables = append(tables, table)
+	}
+
+	return tables, nil
+}
+
+func CreateMigrateTable(ctx context.Context, logger interfaces.ILogger, db *sql.DB) error {
+	return nil
+}
+
+func ListMigrations() ([]string, error) {
+	return []string{}, nil
+}
+
+func ExecuteMigrate(ctx context.Context, logger interfaces.ILogger, db *sql.DB, t string) error {
+	return nil
+}
+
+func Migrate() {
+	if err := environments.NewEnvironment().Configure(); err != nil {
+		log.Fatal(err)
+	}
+	os.Setenv("LOG_FILE", "./logs/seeder.log")
+
+	logger, err := logger.NewLogger()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	logger.Info("[Migrator] - Connection to the database...")
+	db, err := database.Connect(logger, make(chan bool))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx := context.Background()
+	tablesCreated, err := ListTables(ctx, logger, db)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !contains(tablesCreated, "MIGRATES") {
+		if err := CreateMigrateTable(ctx, logger, db); err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	tablesToCreate, err := ListMigrations()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, t := range tablesToCreate {
+		if !contains(tablesCreated, t) {
+			if err := ExecuteMigrate(ctx, logger, db, t); err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
+}
+
+func contains(slice []string, pattern string) bool {
+	for _, v := range slice {
+		if v == pattern {
+			return true
+		}
+	}
+
+	return false
 }
