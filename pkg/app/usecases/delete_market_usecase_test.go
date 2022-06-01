@@ -22,8 +22,6 @@ func TestDeleteMarketUseCaseTestSuite(t *testing.T) {
 	suite.Run(t, new(DeleteMarketUseCaseTestSuite))
 }
 
-func TestFunc() {}
-
 func Test_DeleteMarket_Execute(t *testing.T) {
 	t.Run("should execute correctly", func(t *testing.T) {
 		sut := makeDeleteMarketSut()

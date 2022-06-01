@@ -7,7 +7,7 @@ func NewSeedersCmd() *cobra.Command {
 		Use:   "seeders",
 		Short: "GoLang Base Application Seeders Command",
 		Run: func(cmd *cobra.Command, args []string) {
-			exec()
+			// exec()
 		},
 	}
 }

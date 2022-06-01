@@ -10,6 +10,8 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/ralvescosta/base/pkg/app/interfaces"
 	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
@@ -168,7 +170,33 @@ func ListMigrations() ([]string, error) {
 	return migrates, nil
 }
 
-func ExecuteMigrate(ctx context.Context, logger interfaces.ILogger, db *sql.DB, t string) error {
+func ExecuteMigrateUp(ctx context.Context, logger interfaces.ILogger, db *sql.DB, sqlFile string) error {
+	if !strings.Contains(sqlFile, "up") {
+		return nil
+	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	dat, err := os.ReadFile(cwd + "migration/" + sqlFile)
+	if err != nil {
+		return err
+	}
+
+	row := db.QueryRowContext(ctx, string(dat))
+	err = row.Err()
+	if err != nil {
+		return err
+	}
+
+	row = db.QueryRowContext(ctx, "INSERT INTO migrations (name, created_at) values ($1, $2)", sqlFile, time.Now())
+	err = row.Err()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -195,7 +223,7 @@ func Migrate() {
 		log.Fatal(err)
 	}
 
-	if !contains(tablesCreated, "MIGRATES") {
+	if !contains(tablesCreated, "migrations") {
 		if err := CreateMigrateTable(ctx, logger, db); err != nil {
 			log.Fatal(err)
 		}
@@ -208,7 +236,7 @@ func Migrate() {
 
 	for _, t := range tablesToCreate {
 		if !contains(tablesCreated, t) {
-			if err := ExecuteMigrate(ctx, logger, db, t); err != nil {
+			if err := ExecuteMigrateUp(ctx, logger, db, t); err != nil {
 				log.Fatal(err)
 			}
 		}

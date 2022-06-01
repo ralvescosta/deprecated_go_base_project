@@ -14,8 +14,9 @@ func TestMigratorTestSuite(t *testing.T) {
 	suite.Run(t, new(MigratorTestSuite))
 }
 
-func (s *MigratorTestSuite) TestListMigration() {
-	_, err := ListMigrations()
+func (s *MigratorTestSuite) TestListMigrations() {
+	migrations, err := ListMigrations()
 
 	s.NoError(err)
+	s.NotNil(migrations)
 }
