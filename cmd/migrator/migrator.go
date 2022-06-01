@@ -6,6 +6,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
@@ -139,11 +140,32 @@ func ListTables(ctx context.Context, logger interfaces.ILogger, db *sql.DB) ([]s
 }
 
 func CreateMigrateTable(ctx context.Context, logger interfaces.ILogger, db *sql.DB) error {
+	row := db.QueryRowContext(ctx, "CREATE TABLE migrations (name varchar not null, created_at TIMESTAMPTZ);")
+	err := row.Err()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func ListMigrations() ([]string, error) {
-	return []string{}, nil
+	workDir, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+
+	files, err := ioutil.ReadDir(workDir + "/migrate")
+	if err != nil {
+		return nil, err
+	}
+
+	migrates := []string{}
+	for _, f := range files {
+		migrates = append(migrates, f.Name())
+	}
+
+	return migrates, nil
 }
 
 func ExecuteMigrate(ctx context.Context, logger interfaces.ILogger, db *sql.DB, t string) error {

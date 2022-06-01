@@ -1,0 +1,32 @@
+{
+  "configurations": {
+    "tests": {
+      "autoselect": true,
+	  "default": true,
+      "adapter": "vscode-go",
+      "configuration": {
+        "request": "launch",
+        "program": "${fileDirname}",
+        "mode": "test",
+        "stopAtEntry": true,
+        "cwd": "${workspaceRoot}",
+        "args": ["-test.run", "${TestName}"]
+      }
+    },
+   "with timeout config": {
+      "default": false,
+      "adapter": {
+        "extends": "vscode-go",
+        "sync_timeout": 100000,
+        "async_timeout": 100000
+	    },
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/cmd/worker/main.go",
+        "mode": "debug",
+        "stopAtEntry": true,
+        "cwd": "${workspaceRoot}"
+      }
+    }
+  }
+}
