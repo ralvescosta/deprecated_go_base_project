@@ -1,3 +1,8 @@
+CREATE TABLE migrate (
+	name VARCHAR NOT NULL,
+	create_at TIMESTAMPTZ,
+);
+
 CREATE TABLE feiras (
   id serial NOT NULL,
   long INT NOT NULL,

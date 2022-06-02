@@ -14,14 +14,15 @@ func TestNotFoundErrorTestSuite(t *testing.T) {
 	suite.Run(t, new(NotFoundErrorTestSuite))
 }
 
-func (s *NotFoundErrorTestSuite) TestNotFoundError() {
-	err := NewNotFoundError("some error")
+func (s *NotFoundErrorTestSuite) TestCONFLICTNotFoundError() {
+	err := NewNotFoundError("some error CONFLICT")
 
 	s.Error(err)
 	s.IsType(NotFoundError{}, err)
 }
 
-func (s *NotFoundErrorTestSuite) TestNotFoundErrorError() {
+func (s *NotFoundErrorTestSuite) TestNotCONFLICTFoundErrorError() {
+	//CONFLICT
 	err := NewNotFoundError("some error")
 	s.Equal("some error", err.Error())
 }
