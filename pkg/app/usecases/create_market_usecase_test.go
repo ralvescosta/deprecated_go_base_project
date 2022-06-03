@@ -10,83 +10,89 @@ import (
 	valueObjects "github.com/ralvescosta/base/pkg/domain/value_objects"
 	"github.com/ralvescosta/base/pkg/infra/repositories"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-func Test_CreateMarket_Execute(t *testing.T) {
-	t.Run("should execute correctly when market does not exist yet", func(t *testing.T) {
-		sut := makeCreateMarketSut()
+type CreateMarketUseCaseTestSuite struct {
+	suite.Suite
+}
 
-		ctx := context.Background()
+func TestCreateMarketUseCaseTestSuite(t *testing.T) {
+	suite.Run(t, new(CreateMarketUseCaseTestSuite))
+}
 
-		sut.repo.On(
-			"Find",
-			ctx,
-			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
-		).Return([]valueObjects.MarketValueObjects(nil), nil)
-		sut.repo.On("Create", ctx, sut.marketMocked).Return(sut.marketMocked, nil)
+func (s *CreateMarketUseCaseTestSuite) TestCreateMarket() {
+	sut := makeCreateMarketSut()
 
-		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
+	ctx := context.Background()
 
-		assert.NoError(t, err)
-		assert.False(t, alreadyCreated)
-		sut.repo.AssertExpectations(t)
-	})
+	sut.repo.On(
+		"Find",
+		ctx,
+		valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+	).Return([]valueObjects.MarketValueObjects(nil), nil)
+	sut.repo.On("Create", ctx, sut.marketMocked).Return(sut.marketMocked, nil)
 
-	t.Run("should return erro if some error occur during the insert", func(t *testing.T) {
-		sut := makeCreateMarketSut()
+	_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
 
-		ctx := context.Background()
+	s.NoError(err)
+	s.False(alreadyCreated)
+	sut.repo.AssertExpectations(s.T())
+}
 
-		sut.repo.On(
-			"Find",
-			ctx,
-			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
-		).Return([]valueObjects.MarketValueObjects(nil), nil)
-		sut.repo.On("Create", ctx, sut.marketMocked).Return(valueObjects.MarketValueObjects{}, errors.NewInternalError("some error"))
+func (s *CreateMarketUseCaseTestSuite) TestCreateMarketInsertErr() {
+	sut := makeCreateMarketSut()
 
-		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
+	ctx := context.Background()
 
-		assert.Error(t, err)
-		assert.False(t, alreadyCreated)
-		sut.repo.AssertExpectations(t)
-	})
+	sut.repo.On(
+		"Find",
+		ctx,
+		valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+	).Return([]valueObjects.MarketValueObjects(nil), nil)
+	sut.repo.On("Create", ctx, sut.marketMocked).Return(valueObjects.MarketValueObjects{}, errors.NewInternalError("some error"))
 
-	t.Run("should execute correctly when market already exist", func(t *testing.T) {
-		sut := makeCreateMarketSut()
+	_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
 
-		ctx := context.Background()
+	s.Error(err)
+	s.False(alreadyCreated)
+	sut.repo.AssertExpectations(s.T())
+}
 
-		sut.repo.On(
-			"Find",
-			ctx,
-			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
-		).Return([]valueObjects.MarketValueObjects{{}}, nil)
+func (s *CreateMarketUseCaseTestSuite) TestCreateMarketConflictErr() {
+	sut := makeCreateMarketSut()
 
-		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
+	ctx := context.Background()
 
-		assert.NoError(t, err)
-		assert.True(t, alreadyCreated)
-		sut.repo.AssertExpectations(t)
-	})
+	sut.repo.On(
+		"Find",
+		ctx,
+		valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+	).Return([]valueObjects.MarketValueObjects{{}}, nil)
 
-	t.Run("should return error if some error occur during the find", func(t *testing.T) {
-		sut := makeCreateMarketSut()
+	_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
 
-		ctx := context.Background()
+	s.NoError(err)
+	s.True(alreadyCreated)
+	sut.repo.AssertExpectations(s.T())
+}
 
-		sut.repo.On(
-			"Find",
-			ctx,
-			valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
-		).Return([]valueObjects.MarketValueObjects(nil), errors.NewInternalError("some error"))
+func (s *CreateMarketUseCaseTestSuite) TestCreateMarketFindErr() {
+	sut := makeCreateMarketSut()
 
-		_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
+	ctx := context.Background()
 
-		assert.Error(t, err)
-		assert.False(t, alreadyCreated)
-		sut.repo.AssertExpectations(t)
-	})
+	sut.repo.On(
+		"Find",
+		ctx,
+		valueObjects.MarketValueObjects{Registro: sut.marketMocked.Registro},
+	).Return([]valueObjects.MarketValueObjects(nil), errors.NewInternalError("some error"))
+
+	_, alreadyCreated, err := sut.useCase.Execute(ctx, sut.marketMocked)
+
+	s.Error(err)
+	s.False(alreadyCreated)
+	sut.repo.AssertExpectations(s.T())
 }
 
 type createMarketSutRtn struct {

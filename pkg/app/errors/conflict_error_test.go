@@ -3,22 +3,26 @@ package errors
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-func Test_NewConflictError(t *testing.T) {
-	t.Run("should create a conflictError correctly", func(t *testing.T) {
-		err := NewConflictError("some error")
-
-		assert.Error(t, err)
-		assert.IsType(t, ConflictError{}, err)
-	})
+type ConflictErrTestSuite struct {
+	suite.Suite
 }
 
-func Test_NewConflictError_Error(t *testing.T) {
-	t.Run("should return error msg", func(t *testing.T) {
-		err := NewConflictError("some error")
+func TestConclictErrTestSuite(t *testing.T) {
+	suite.Run(t, new(ConflictErrTestSuite))
+}
 
-		assert.Equal(t, "some error", err.Error())
-	})
+func (s *ConflictErrTestSuite) TestNewConflictError() {
+	err := NewConflictError("some error")
+
+	s.Error(err)
+	s.IsType(ConflictError{}, err)
+
+}
+
+func (s *ConflictErrTestSuite) TestNewConflictErrorError() {
+	err := NewConflictError("some error")
+	s.Equal("some error", err.Error())
 }
