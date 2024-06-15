@@ -12,9 +12,9 @@ require (
 	github.com/lib/pq v1.10.4
 	github.com/ralvescosta/dotenv v1.0.4
 	github.com/spf13/cobra v1.4.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.9.0
 	github.com/urfave/cli/v2 v2.4.0
-	github.com/vektah/gqlparser/v2 v2.4.1
+	github.com/vektah/gqlparser/v2 v2.5.14
 	go.elastic.co/apm/module/apmgin/v2 v2.0.0
 	go.elastic.co/apm/v2 v2.0.0
 	go.uber.org/zap v1.21.0
@@ -53,7 +53,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/santhosh-tekuri/jsonschema v1.2.4 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/objx v0.5.0 // indirect
+	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.9 // indirect
 	go.elastic.co/apm/module/apmhttp/v2 v2.0.0 // indirect
